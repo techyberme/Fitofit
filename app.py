@@ -77,6 +77,151 @@ def listar_usuario_actividad():
         return jsonify({'mensaje': ex})
                         
 
+#eventos
+@app.route('/cursos', methods= ['POST'])
+def registrar_evento():
+    #print(request)
+    try:
+        cursor = conexion.connection.cursor()
+        sql = """INSERT INTO eventos
+(ID_EVENTO, FECHA, HORA, PRECIO, LOCALIZACION,PLAZAS)
+VALUES ('{0}','{1}','{2}','{3}','{4}','{5}') """.format(request.json ['evento'],
+request.json['fecha'],
+
+request.json['hora'],
+
+request.json['precio'],
+
+request.json['localizacion'],
+
+request.json['plazas']
+            
+            )
+        
+        cursor. execute(sql)
+        conexion.connection.commit()
+#confirma acción inserción
+    #print(request.json)
+        return jsonify({'mensaje': 'evento registrado'})
+    except Exception as ex:
+        return jsonify({'mensaje': "error"})
+    
+
+#usuarios
+@app.route('/cursos', methods= ['POST'])
+def registrar_usuario():
+    #print(request)
+    try:
+        cursor = conexion.connection.cursor()
+        sql = """INSERT INTO usuarios
+(ID_USUARIO, NOMBRE_USUARIO, CORREO, CONTRASEÑA, FECHA_NAC,SEXO)
+VALUES ('{0}','{1}','{2}','{3}','{4}','{5}') """.format(request.json ['id del usuario'],
+request.json['nombre de usuario'],
+
+request.json['direccion de correo'],
+
+request.json['contraseña'],
+
+request.json['fecha nacimiento'],
+
+request.json['sexo']
+            
+            )
+        
+        cursor. execute(sql)
+        conexion.connection.commit()
+#confirma acción inserción
+    #print(request.json)
+        return jsonify({'mensaje': 'usuario registrado'})
+    except Exception as ex:
+        return jsonify({'mensaje': "error"})
+
+
+#deportes
+@app.route('/cursos', methods= ['POST'])
+def registrar_deporte():
+    #print(request)
+    try:
+        cursor = conexion.connection.cursor()
+        sql = """INSERT INTO deportes
+(NOMBRE_DEPORTE, TIPO_DEPORTE, EQUIPO)
+VALUES ('{0}','{1}','{2}') """.format(request.json ['nombre del deporte'],
+request.json['tipo de deporte'],
+
+request.json['equipo']
+            
+            )
+        
+        cursor. execute(sql)
+        conexion.connection.commit()
+#confirma acción inserción
+    #print(request.json)
+        return jsonify({'mensaje': 'deporte registrado'})
+    except Exception as ex:
+        return jsonify({'mensaje': "error"})
+
+
+
+
+#actividades
+@app.route('/cursos', methods= ['POST'])
+def registrar_actividad():
+    #print(request)
+    try:
+        cursor = conexion.connection.cursor()
+        sql = """INSERT INTO actividades
+(ID_ACTIVIDAD, NOMBRE_ACTIVIDAD, TEXTO, KM, FRECUENCIACARDIACA,KCAL, DURACION, ID_EVENTO,NOMBRE_DEPORTE)
+VALUES ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}') """.format(request.json ['id de la actividad'],
+request.json['nombre de la actividad'],
+
+request.json['texto'],
+
+request.json['km'],
+
+request.json['frecuencia cardiaca'],
+
+request.json['kcal'],
+            
+request.json['duracion'],
+
+request.json['id del evento'],
+
+request.json['nombre del deporte']
+    
+            )
+        
+        cursor. execute(sql)
+        conexion.connection.commit()
+#confirma acción inserción
+    #print(request.json)
+        return jsonify({'mensaje': 'actividad registrada'})
+    except Exception as ex:
+        return jsonify({'mensaje': "error"})
+    
+
+#eventousuario
+@app.route('/cursos', methods= ['POST'])
+def registrar_eventousuario():
+    #print(request)
+    try:
+        cursor = conexion.connection.cursor()
+        sql = """INSERT INTO eventousuario
+(ID_EVENTO,ID_USUARIO)
+VALUES ('{0}','{1}','{2}') """.format(request.json ['id del evento'],
+request.json['id del usuario']
+            
+            )
+        
+        cursor. execute(sql)
+        conexion.connection.commit()
+#confirma acción inserción
+    #print(request.json)
+        return jsonify({'mensaje': 'eventousuario registrado'})
+    except Exception as ex:
+        return jsonify({'mensaje': "error"})
+
+
+
 ##leer
 @app.route('/eventos/<codigo>', methods= ['GET'])
 def leer_evento(codigo):
