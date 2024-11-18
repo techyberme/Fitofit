@@ -422,7 +422,7 @@ INSERT INTO USUARIOACTIVIDAD (ID_USUARIO, ID_ACTIVIDAD) VALUES
 
 
 
-
+##Falta tabla eventos usuario
 
 
 
