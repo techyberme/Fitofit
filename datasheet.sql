@@ -103,9 +103,14 @@ INSERT INTO EVENTOS (ID_EVENTO, FECHA, HORA, PRECIO, LOCALIZACION, PLAZAS) VALUE
 
 ('EV_019', '2024-11-26', '21:45', 74.39, 'Calle Marques de Larios, Málaga', 47), 
 
-('EV_020', '2025-04-12', '18:15', 51.67, 'Calle Alfonso I, Zaragoza', 19); 
+('EV_020', '2025-04-12', '18:15', 51.67, 'Calle Alfonso I, Zaragoza', 19), 
 
+('EV_021', '2023-05-13', '08:15', 80.00, 'Paseo de la Independencia, Zaragoza', 300), 
 
+('EV_022', '2024-05-19', '10:15', 75.60, 'Paseo de la Castellana, Madrid', 250),
+
+('EV_023', '2025-06-23, '11:15', 68.60, 'Paseo de Gracia, Barcelona', 290); 
+	
 
 INSERT INTO USUARIOS (ID_USUARIO, NOMBRE_USUARIO, CORREO, CONTRASENA, FECHA_NAC, SEXO) VALUES 
 
@@ -216,7 +221,84 @@ INSERT INTO ACTIVIDADES(ID_ACTIVIDAD, NOMBRE_ACTIVIDAD, TEXTO, KM, FC, KCAL, DUR
 
 ('id_act9', 'Maratón', 'Maratón completo en la ciudad', 42.2, 170, 3000, '04:00:00', 'EV_009', 'Carrera'), 
 
-('id_act10', 'Kitesurf', 'Curso de kitesurf para principiantes', NULL, 140, 600, '01:20:00', 'EV_010', 'Kitesurf'); 
+('id_act10', 'Kitesurf', 'Curso de kitesurf para principiantes', NULL, 140, 600, '01:20:00', 'EV_010', 'Kitesurf'),
+	('id_act11', 'Maratón', 'Maratón completo en la ciudad', 42, 160, 2500, '04:23:01', 'EV_011', 'Atletismo'), 
+
+('id_act12, 'Maratón', 'Maratón completo en la ciudad', 42, 175, 2200, '03:34:18', 'EV_012', 'Atletismo'), 
+
+('id_act13, 'Maratón', 'Maratón Zaragoza', 42, 175, 2200, '03:34:18', 'EV_021', 'Atletismo'), 
+
+('id_act14, 'Maratón', 'Maratón completo en Zaragoza', 42, 175, 2200, '03:34:18', 'EV_021', 'Atletismo'), 
+
+('id_act15, 'Maratón', 'Maratón con amigos Madrid', 42, 175, 2200, '03:34:18', 'EV_022', 'Atletismo'), 
+
+('id_act16, 'Maratón', 'Maratón  de Barcelona', 42, 175, 2200, '03:34:18', 'EV_023', 'Atletismo'), 
+
+('id_act17', 'Partido Futbol Amistoso', 'Partido amistoso de fútbol con amigos', 0, 145, 700, '01:30:00', NULL, 'Futbol'),  
+
+('id_act18', 'Entrenamiento Futbol', 'Sesión de entrenamiento técnico y táctico', 0, 135, 500, '01:00:00', NULL, 'Futbol'), 
+
+ ('id_act19', 'Torneo Futbol 5', 'Participación en torneo de fútbol 5 vs 5', 0, 150, 600, '00:50:00', NULL, 'Futbol'), 
+
+('id_act20', 'Surf Libre', 'Surf libre en olas medianas', 0, 120, 400, '00:45:00', NULL, 'Surf'),  
+
+('id_act21', 'Entrenamiento Surf', 'Práctica de maniobras y equilibrio', 0, 110, 350, '01:00:00', NULL, 'Surf'),  
+
+('id_act22', 'Competencia Surf', 'Participación en competencia local', 0, 130, 500, '01:15:00', NULL, 'Surf'), 
+
+('id_act23', 'Escalada en Roca', 'Escalada al aire libre en roca natural', 0, 130, 600, '02:00:00', NULL, 'Escalada'),  
+
+('id_act24', 'Boulder en Rocódromo', 'Práctica de boulder en rocódromo', 0, 140, 450, '01:30:00', NULL, 'Escalada'),  
+
+('id_act25', 'Escalada en Vía Larga', 'Ascenso de varias rutas en vía larga', 0, 120, 700, '03:00:00', NULL, 'Escalada'), 
+
+('id_act26', 'Partido Baloncesto Amistoso', 'Partido amistoso con compañeros de equipo', 0, 130, 550, '01:00:00', NULL, 'Baloncesto'), 
+
+ ('id_act27', 'Entrenamiento Baloncesto', 'Práctica de tiros y jugadas tácticas', 0, 125, 400, '00:45:00', NULL, 'Baloncesto'),  
+
+('id_act28', 'Torneo Baloncesto', 'Participación en torneo local', 0, 140, 700, '01:30:00', NULL, 'Baloncesto'), 
+
+('id_act29', 'Entrenamiento Natación', 'Sesión de entrenamiento de resistencia en piscina', 0, 125, 400, '00:45:00', NULL, 'Natación'),  
+
+('id_act30', 'Natación Libre', 'Natación recreativa en piscina olímpica', 0, 110, 350, '00:30:00', NULL, 'Natación'), 
+
+ ('id_act31', 'Competencia Natación', 'Participación en competencia de estilo libre', 0, 135, 600, '01:00:00', NULL, 'Natación'), 
+
+('id_act32', 'Partido Rugby Amistoso', 'Partido amistoso de rugby con el equipo', 0, 150, 800, '01:20:00', NULL, 'Rugby'), 
+
+('id_act33', 'Entrenamiento Rugby', 'Entrenamiento de fuerza y tácticas de juego', 0, 140, 600, '01:00:00', NULL, 'Rugby'), 
+
+('id_act34', 'Torneo Rugby', 'Participación en torneo regional de rugby', 0, 160, 900, '01:30:00', NULL, 'Rugby'), 
+
+('id_act35', 'Kitesurf en Playa', 'Práctica de kitesurf en condiciones de viento moderado', 0, 130, 500, '01:00:00', NULL, 'Kitesurf'), 
+
+('id_act36', 'Competencia Kitesurf', 'Participación en competencia de freestyle', 0, 140, 700, '01:30:00', NULL, 'Kitesurf'), 
+
+('id_act37', 'Entrenamiento Kitesurf', 'Sesión de entrenamiento de maniobras avanzadas', 0, 120, 450, '00:50:00', NULL, 'Kitesurf'),
+
+('id_act38', 'Vuelo de Parapente en Montaña', 'Vuelo sobre un paisaje montañoso con vistas panorámicas', 0, 90, 250, '01:00:00', NULL, 'Parapente'), 
+ 
+
+('id_act39', 'Entrenamiento de Parapente', 'Práctica de control y maniobras en parapente', 0, 85, 200, '00:45:00', NULL, 'Parapente'), 
+ 
+
+('id_act40', 'Competencia de Parapente', 'Participación en una competencia de vuelo de distancia', 0, 100, 300, '02:30:00', NULL, 'Parapente'),
+
+ 
+
+('id_act41', 'Partido de Volleyball', 'Juego recreativo de volleyball en la playa', 0, 120, 350, '01:15:00', NULL, 'Volley'),  
+
+('id_act42', 'Entrenamiento de Volleyball', 'Práctica de recepción, saque y bloqueo', 0, 110, 300, '01:00:00', NULL, 'Volley'), 
+
+('id_act43', 'Torneo de Volleyball', 'Competencia en un torneo local de volleyball', 0, 130, 400, '02:00:00', NULL, 'Volley'),
+
+('id_act44', 'Buceo en Arrecife', 'Exploración de arrecifes de coral', 0, 100, 300, '01:20:00', NULL, 'Buceo'),  
+
+('id_act45', 'Buceo Nocturno', 'Inmersión nocturna con observación de fauna marina', 0, 95, 280, '01:00:00', NULL, 'Buceo'),  
+
+('id_act46', 'Práctica de Buceo', 'Sesión de entrenamiento en aguas abiertas', 0, 105, 320, '01:30:00', NULL, 'Buceo'); 
+
+ 
 
 INSERT INTO USUARIOACTIVIDAD (ID_USUARIO, ID_ACTIVIDAD) VALUES 
 
@@ -258,9 +340,85 @@ INSERT INTO USUARIOACTIVIDAD (ID_USUARIO, ID_ACTIVIDAD) VALUES
 
 ('id_usuario_10', 'id_act6'), 
 
-('id_usuario_10', 'id_act10'); 
+('id_usuario_10', 'id_act10'),
  
+('id_usuario_1', 'id_act13'), 
 
+('id_usuario_2', 'id_act13'), 
+
+('id_usuario_3', 'id_act14'), 
+
+('id_usuario_4', 'id_act15'), 
+
+('id_usuario_5', 'id_act15'), 
+
+('id_usuario_6', 'id_act15'), 
+
+('id_usuario_7', 'id_act16'), 
+
+('id_usuario_8', 'id_act16'), 
+
+('id_usuario_1', 'id_act19'), 
+
+('id_usuario_1', 'id_act17'), 
+
+('id_usuario_1', 'id_act18'), 
+
+('id_usuario_2’, 'id_act20'), 
+
+('id_usuario_2’, 'id_act21'), 
+
+('id_usuario_2’, 'id_act22'), 
+
+('id_usuario_3’, 'id_act23'), 
+
+('id_usuario_3’, 'id_act24'), 
+
+('id_usuario_3’, 'id_act25'), 
+
+('id_usuario_4’, 'id_act26'), 
+
+('id_usuario_4’, 'id_act27'), 
+
+('id_usuario_4’, 'id_act28'), 
+
+('id_usuario_5’, 'id_act29'), 
+
+('id_usuario_5’, 'id_act30'), 
+
+('id_usuario_5’, 'id_act31'), 
+
+('id_usuario_6’, 'id_act32'), 
+
+('id_usuario_6’, 'id_act33'), 
+
+('id_usuario_6’, 'id_act34'), 
+
+('id_usuario_7', 'id_act35'), 
+
+('id_usuario_7', 'id_act36'), 
+
+('id_usuario_7', 'id_act37'), 
+
+('id_usuario_8', 'id_act38'), 
+
+('id_usuario_8', 'id_act39'), 
+
+('id_usuario_8', 'id_act40'), 
+
+('id_usuario_9', 'id_act41'), 
+
+('id_usuario_9', 'id_act42'), 
+
+('id_usuario_9', 'id_act43'), 
+
+('id_usuario_10', 'id_act44'), 
+
+('id_usuario_10', 'id_act45'), 
+
+('id_usuario_10', 'id_act46'), 
+
+('id_usuario_8', 'id_act13');
 
 
 
