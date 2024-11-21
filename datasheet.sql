@@ -109,7 +109,7 @@ INSERT INTO EVENTOS (ID_EVENTO, FECHA, HORA, PRECIO, LOCALIZACION, PLAZAS) VALUE
 
 ('EV_022', '2024-05-19', '10:15', 75.60, 'Paseo de la Castellana, Madrid', 250),
 
-('EV_023', '2025-06-23, '11:15', 68.60, 'Paseo de Gracia, Barcelona', 290); 
+('EV_023', '2025-06-23', '11:15', 68.60, 'Paseo de Gracia, Barcelona', 290); 
 	
 
 INSERT INTO USUARIOS (ID_USUARIO, NOMBRE_USUARIO, CORREO, CONTRASENA, FECHA_NAC, SEXO) VALUES 
@@ -118,11 +118,11 @@ INSERT INTO USUARIOS (ID_USUARIO, NOMBRE_USUARIO, CORREO, CONTRASENA, FECHA_NAC,
 
 ('id_usuario_2', 'Laura Navarro', 'laura@gmail.com', 'ssFN5TAMUf', '1970-11-28', 'F'), 
 
-('id_usuario_3', 'Juan Rodríguez', 'juan@outlook.com', '(Qpo3JxSs%', '2005-11-19', 'M'), 
+('id_usuario_3', 'Juan Rodríguez', 'juan@outlook.com', 'Qpo3JxSs%', '2005-11-19', 'M'), 
 
-('id_usuario_4', 'Luis García', 'luis@yahoo.com', 'lnIUrYw(F)', '1994-11-22', 'M'), 
+('id_usuario_4', 'Luis García', 'luis@yahoo.com', 'lnIUrYwF', '1994-11-22', 'M'), 
 
-('id_usuario_5', 'Raúl Ruiz', 'raúl@outlook.com', 'vZx9OcG)fX', '1981-11-25', 'M'), 
+('id_usuario_5', 'Raúl Ruiz', 'raúl@outlook.com', 'vZx9OcGfX', '1981-11-25', 'M'), 
 
 ('id_usuario_6', 'Andrés Torres', 'andrés@outlook.com', 'xm@a2gxkq7', '1995-11-22', 'M'), 
 
@@ -130,21 +130,21 @@ INSERT INTO USUARIOS (ID_USUARIO, NOMBRE_USUARIO, CORREO, CONTRASENA, FECHA_NAC,
 
 ('id_usuario_8', 'Sara Pérez', 'sara@hotmail.com', 'Tm8#YOjq!f', '1966-11-29', 'F'), 
 
-('id_usuario_9', 'María Ramírez', 'maría@gmail.com', 'ZFJEZ(abeV', '1964-11-29', 'F'), 
+('id_usuario_9', 'María Ramírez', 'maría@gmail.com', 'ZFJEZabeV', '1964-11-29', 'F'), 
 
-('id_usuario_10', 'Sofía Alonso', 'sofía@outlook.com', 'ZgneA4(h4T', '2000-11-20', 'F'), 
+('id_usuario_10', 'Sofía Alonso', 'sofía@outlook.com', 'ZgneA4h4T', '2000-11-20', 'F'), 
 
-('id_usuario_11', 'Paula García', 'paula@outlook.com', 'MSdksj)86E', '1977-11-26', 'F'), 
+('id_usuario_11', 'Paula García', 'paula@outlook.com', 'MSdksj86E', '1977-11-26', 'F'), 
 
-('id_usuario_12', 'Alberto Rodríguez', 'alberto@hotmail.com', '0kEyb)iOVa', '1999-11-21', 'M'), 
+('id_usuario_12', 'Alberto Rodríguez', 'alberto@hotmail.com', '0kEybiOVa', '1999-11-21', 'M'), 
 
 ('id_usuario_13', 'Cristina Sánchez', 'cristina@hotmail.com', '3QA7D2m!vo', '1989-11-23', 'F'), 
 
-('id_usuario_14', 'Marta Hernández', 'marta@hotmail.com', '&)IyFTKB0z', '2006-11-19', 'F'), 
+('id_usuario_14', 'Marta Hernández', 'marta@hotmail.com', '&IyFTKB0z', '2006-11-19', 'F'), 
 
 ('id_usuario_15', 'Clara Romero', 'clara@yahoo.com', 'VM8j4b9T*x', '2005-11-19', 'F'), 
 
-('id_usuario_16', 'Eva Moreno', 'eva@hotmail.com', '&F^j)3khF(', '1969-11-28', 'F'), 
+('id_usuario_16', 'Eva Moreno', 'eva@hotmail.com', '&F^j3khF', '1969-11-28', 'F'), 
 
 ('id_usuario_17', 'Luis López', 'luis@yahoo.com', 'Ha3zdX0OPn', '1971-11-28', 'M'), 
 
@@ -152,7 +152,7 @@ INSERT INTO USUARIOS (ID_USUARIO, NOMBRE_USUARIO, CORREO, CONTRASENA, FECHA_NAC,
 
 ('id_usuario_19', 'Clara Gutiérrez', 'clara@outlook.com', 'pygF*2v&jB', '1972-11-27', 'F'), 
 
-('id_usuario_20', 'Ricardo Navarro', 'ricardo@hotmail.com', 'Ct2tRvQ3R)', '1991-11-23', 'M'), 
+('id_usuario_20', 'Ricardo Navarro', 'ricardo@hotmail.com', 'Ct2tRvQ3R', '1991-11-23', 'M'), 
 
 ('id_usuario_21', 'Clara Martínez', 'clara@hotmail.com', 'v^x0vpz@no', '1972-11-27', 'F'), 
 
@@ -160,24 +160,24 @@ INSERT INTO USUARIOS (ID_USUARIO, NOMBRE_USUARIO, CORREO, CONTRASENA, FECHA_NAC,
 
 ('id_usuario_23', 'Alberto Fernández', 'alberto@outlook.com', 'Fx%7MWl%tR', '1981-11-25', 'M'), 
 
-('id_usuario_24', 'Cristina Torres', 'cristina@yahoo.com', 'K)iQbF5pCD', '1966-11-29', 'F'), 
+('id_usuario_24', 'Cristina Torres', 'cristina@yahoo.com', 'KiQbF5pCD', '1966-11-29', 'F'), 
 
 ('id_usuario_25', 'Alberto Fernández', 'alberto@yahoo.com', 'i61OpAT&gw', '1990-11-23', 'M'), 
 
 ('id_usuario_26', 'Alberto Gutiérrez', 'alberto@hotmail.com', 'nX7bw&s^jJ', '1974-11-27', 'M'), 
 
-('id_usuario_27', 'Andrés Ruiz', 'andrés@outlook.com', 'K&dyBBPQ6)', '2002-11-20', 'M'), 
+('id_usuario_27', 'Andrés Ruiz', 'andrés@outlook.com', 'K&dyBBPQ6', '2002-11-20', 'M'), 
 
 ('id_usuario_28', 'Pablo Torres', 'pablo@yahoo.com', '!QyUgvxl&M', '2006-11-19', 'M'), 
 
-('id_usuario_29', 'María Rodríguez', 'maría@gmail.com', 'QgthZuFX(t', '1966-11-29', 'F'), 
+('id_usuario_29', 'María Rodríguez', 'maría@gmail.com', 'QgthZuFXt', '1966-11-29', 'F'), 
 
-('id_usuario_30', 'Sara Fernández', 'sara@yahoo.com', 'tMx)Uu(T9I', '1978-11-26', 'F'); 
+('id_usuario_30', 'Sara Fernández', 'sara@yahoo.com', 'tMxUuT9I', '1978-11-26', 'F'); 
 
 
 INSERT INTO DEPORTES (NOMBRE_DEPORTE, TIPO_DEPORTE, EQUIPO) VALUES 
 
-	('Fútbol', 'clásicos', 'S'), 
+	('Futbol', 'clásicos', 'S'), 
 
 	('Surf', 'acuáticos', 'N'), 
 
@@ -193,7 +193,7 @@ INSERT INTO DEPORTES (NOMBRE_DEPORTE, TIPO_DEPORTE, EQUIPO) VALUES
 
 	('Parapente', 'extremos', 'N'), 
 
-	('Voleibol', 'clásicos', 'S'), 
+	('Volley', 'clásicos', 'S'), 
 
 	('Buceo', 'acuáticos', 'N'), 
 	('Carrera', 'clásicos', 'N'),
@@ -209,9 +209,9 @@ INSERT INTO ACTIVIDADES(ID_ACTIVIDAD, NOMBRE_ACTIVIDAD, TEXTO, KM, FC, KCAL, DUR
 
 ('id_act3', 'Clase de Yoga', 'Clase de yoga para relajarse', NULL, 80, 150, '01:00:00', 'EV_003', 'Yoga'), 
 
-('id_act4', 'Fútbol Amistoso', 'Partido de fútbol amistoso', NULL, 140, 500, '01:30:00', 'EV_004', 'Fútbol'), 
+('id_act4', 'Fútbol Amistoso', 'Partido de fútbol amistoso', NULL, 140, 500, '01:30:00', 'EV_004', 'Futbol'), 
 
-('id_act5', 'Voleibol Playa', 'Partido de voleibol en la playa', NULL, 130, 400, '01:00:00', 'EV_005', 'Voleibol'), 
+('id_act5', 'Voleibol Playa', 'Partido de voleibol en la playa', NULL, 130, 400, '01:00:00', 'EV_005', 'Volley'), 
 
 ('id_act6', 'Rugby Infantil', 'Partido para niños', NULL, 110, 300, '00:40:00', 'EV_006', 'Rugby'), 
 
@@ -222,17 +222,17 @@ INSERT INTO ACTIVIDADES(ID_ACTIVIDAD, NOMBRE_ACTIVIDAD, TEXTO, KM, FC, KCAL, DUR
 ('id_act9', 'Maratón', 'Maratón completo en la ciudad', 42.2, 170, 3000, '04:00:00', 'EV_009', 'Carrera'), 
 
 ('id_act10', 'Kitesurf', 'Curso de kitesurf para principiantes', NULL, 140, 600, '01:20:00', 'EV_010', 'Kitesurf'),
-	('id_act11', 'Maratón', 'Maratón completo en la ciudad', 42, 160, 2500, '04:23:01', 'EV_011', 'Atletismo'), 
+('id_act11', 'Maratón', 'Maratón completo en la ciudad', 42, 160, 2500, '04:23:01', 'EV_011', 'Carrera'), 
 
-('id_act12, 'Maratón', 'Maratón completo en la ciudad', 42, 175, 2200, '03:34:18', 'EV_012', 'Atletismo'), 
+('id_act12', 'Maratón', 'Maratón completo en la ciudad', 42, 175, 2200, '03:34:18', 'EV_012', 'Carrera'), 
 
-('id_act13, 'Maratón', 'Maratón Zaragoza', 42, 175, 2200, '03:34:18', 'EV_021', 'Atletismo'), 
+('id_act13', 'Maratón', 'Maratón Zaragoza', 42, 175, 2200, '03:34:18', 'EV_021', 'Carrera'), 
 
-('id_act14, 'Maratón', 'Maratón completo en Zaragoza', 42, 175, 2200, '03:34:18', 'EV_021', 'Atletismo'), 
+('id_act14', 'Maratón', 'Maratón completo en Zaragoza', 42, 175, 2200, '03:34:18', 'EV_021', 'Carrera'), 
 
-('id_act15, 'Maratón', 'Maratón con amigos Madrid', 42, 175, 2200, '03:34:18', 'EV_022', 'Atletismo'), 
+('id_act15', 'Maratón', 'Maratón con amigos Madrid', 42, 175, 2200, '03:34:18', 'EV_022', 'Carrera'), 
 
-('id_act16, 'Maratón', 'Maratón  de Barcelona', 42, 175, 2200, '03:34:18', 'EV_023', 'Atletismo'), 
+('id_act16', 'Maratón', 'Maratón  de Barcelona', 42, 175, 2200, '03:34:18', 'EV_023', 'Carrera'), 
 
 ('id_act17', 'Partido Futbol Amistoso', 'Partido amistoso de fútbol con amigos', 0, 145, 700, '01:30:00', NULL, 'Futbol'),  
 
@@ -364,35 +364,35 @@ INSERT INTO USUARIOACTIVIDAD (ID_USUARIO, ID_ACTIVIDAD) VALUES
 
 ('id_usuario_1', 'id_act18'), 
 
-('id_usuario_2’, 'id_act20'), 
+('id_usuario_2', 'id_act20'), 
 
-('id_usuario_2’, 'id_act21'), 
+('id_usuario_2', 'id_act21'), 
 
-('id_usuario_2’, 'id_act22'), 
+('id_usuario_2', 'id_act22'), 
 
-('id_usuario_3’, 'id_act23'), 
+('id_usuario_3', 'id_act23'), 
 
-('id_usuario_3’, 'id_act24'), 
+('id_usuario_3', 'id_act24'), 
 
-('id_usuario_3’, 'id_act25'), 
+('id_usuario_3', 'id_act25'), 
 
-('id_usuario_4’, 'id_act26'), 
+('id_usuario_4', 'id_act26'), 
 
-('id_usuario_4’, 'id_act27'), 
+('id_usuario_4', 'id_act27'), 
 
-('id_usuario_4’, 'id_act28'), 
+('id_usuario_4', 'id_act28'), 
 
-('id_usuario_5’, 'id_act29'), 
+('id_usuario_5', 'id_act29'), 
 
-('id_usuario_5’, 'id_act30'), 
+('id_usuario_5', 'id_act30'), 
 
-('id_usuario_5’, 'id_act31'), 
+('id_usuario_5', 'id_act31'), 
 
-('id_usuario_6’, 'id_act32'), 
+('id_usuario_6', 'id_act32'), 
 
-('id_usuario_6’, 'id_act33'), 
+('id_usuario_6', 'id_act33'), 
 
-('id_usuario_6’, 'id_act34'), 
+('id_usuario_6', 'id_act34'), 
 
 ('id_usuario_7', 'id_act35'), 
 
@@ -422,7 +422,7 @@ INSERT INTO USUARIOACTIVIDAD (ID_USUARIO, ID_ACTIVIDAD) VALUES
 
 
 
-##Falta tabla eventos usuario
+ 
 
 
 
