@@ -345,4 +345,20 @@ def obtener_contrasena(codigo):
     except Exception as ex:
         return jsonify({'mensaje': 'Error al obtener la contraseña', 'error': str(ex)})
 
+@app.route('/usuarios/nombre_usuario/<codigo>', methods= ['GET'])
+def obtener_nombre(codigo):
+    try:
+        cursor =conexion.connection.cursor()
+
+        sql = "SELECT NOMBRE_USUARIO FROM USUARIOS WHERE ID_USUARIO LIKE '%{0}'".format(codigo)
+        cursor.execute(sql)
+        fila=cursor.fetchone()
+        if fila:
+            return jsonify({'nombre_usuario': fila[0]})
+        else:
+            return jsonify({'mensaje': 'Usuario no encontrado'})
+    
+    except Exception as ex:
+        return jsonify({'mensaje': 'Error al obtener el usuario', 'error': str(ex)})
+
 
