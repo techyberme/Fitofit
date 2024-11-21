@@ -3,8 +3,11 @@ import pandas as pd
 import requests
 import csv
 import time
+usuario="id_usuario_1"
 with st.sidebar:
-     st.title('Bienvenido a FitoFit!')
+     nombre=""
+     bienvenida= 'Bienvenido a FitoFit!' + nombre
+     st.title(bienvenida)
      st.info('Qué quieres hacer?')
      choice = st.radio('Menú', ['Iniciar sesión','Tu actividad', 'Subir una actividad', 'Consultar un evento',"FitoFito","Crear un Evento"])
 if choice == 'Iniciar sesión':
@@ -12,6 +15,34 @@ if choice == 'Iniciar sesión':
         usuario=st.text_input("Usuario")
         contrasena=st.text_input("Contraseña")
         submitted = st.form_submit_button("Submit")
+        if submitted:
+                
+                url="http://127.0.0.1:5000/usuarios/contrasena/"+usuario
+                try:
+                    dato = requests.get(url).json()
+                    contra=dato["contrasena"]
+                    
+                    if contra!=contrasena:
+                        usuario=0
+                        st.warning('Contraseña Incorrecta', icon="⚠️")
+                    else:
+                        st.balloons()
+
+                except requests.exceptions.RequestException as e:
+                    st.write("")
+
+                ##sacar nombre_usuario
+                url="http://127.0.0.1:5000/usuarios/nombre_usuario/"+ usuario
+                try:
+                    dato = requests.get(url).json()
+                    nombre=dato["nombre_usuario"]
+                    with st.sidebar:
+                            bienvenida= 'Te damos la bienvenida a FitoFit,' + nombre +'!'
+                            st.title(bienvenida)
+                except requests.exceptions.RequestException as e:
+                    st.write("")
+
+    
 if choice == 'Tu actividad':
      st.write("Input Carrera")
      st.title('Gráfica de precios')
@@ -21,6 +52,16 @@ if choice == 'Subir una actividad':
 ## ¡¿Qué has hecho hoy?!
 
 """)
+    url="http://127.0.0.1:5000/ultimaactividad"
+    try:
+        dato = requests.get(url).json()
+        id_act=dato["actividad"]["ID_ACTIVIDAD"]
+        id_act = int(id_act[(id_act.index('t') + 1):]) # Start just after 't'
+        id=id_act+1
+        id_act= f"id_act{id}"
+        st.write(id_act)
+    except requests.exceptions.RequestException as e:
+        st.write("")
     col1, col2 = st.columns(2)
     on = col2.toggle("¿Ha sido parte de algún evento?")
     if on:
@@ -33,7 +74,6 @@ if choice == 'Subir una actividad':
             )
         with st.form("my_form"):
             # User selects the type of sport
-            id_act= st.text_input("id la actividad")
             nombre = st.text_input("Nombre de la actividad")
             deporte= option      
             if option == "Otro":        
@@ -53,31 +93,49 @@ if choice == 'Subir una actividad':
             submitted = st.form_submit_button("Submit")
             if submitted:
                 st.balloons()
-            dict= {
-                "ID_ACTIVIDAD" : id_act,
-                "NOMBRE_ACTIVIDAD": nombre,
-                "TEXTO": desc,
-                "KM":km,
-                "FC": fc,
-                "KCAL": kcal,
-                "DURACION": dur,
-                "ID_EVENTO": "EV_001",
-                "NOMBRE_DEPORTE": deporte    
+                dict= {
+                    "ID_ACTIVIDAD" : id_act,
+                    "NOMBRE_ACTIVIDAD": nombre,
+                    "TEXTO": desc,
+                    "KM":km,
+                    "FC": fc,
+                    "KCAL": kcal,
+                    "DURACION": dur,
+                    "ID_EVENTO": "EV_001",
+                    "NOMBRE_DEPORTE": deporte    
+                    }
+                url="http://127.0.0.1:5000/actividades"
+
+
+                try:
+                    # Sending POST request with data as JSON
+                    response = requests.post(url, json=dict)
+                    
+                    # Check if the request was successful
+                    response.raise_for_status()  # Raises an error for 4xx/5xx HTTP status codes
+                except requests.exceptions.RequestException as e:
+                    st.error(f"An error occurred: {e}")
+
+                
+                ##mirar esto
+                dict1= {
+                    "ID_USUARIO" : usuario,
+                    "ID_ACTIVIDAD" : id_act  
                 }
-            url="http://127.0.0.1:5000/actividades"
+                url="http://127.0.0.1:5000/usuarioactividad"
 
 
-            try:
+                try:
                 # Sending POST request with data as JSON
-                response = requests.post(url, json=dict)
+                    response = requests.post(url, json=dict1)
                 
                 # Check if the request was successful
-                response.raise_for_status()  # Raises an error for 4xx/5xx HTTP status codes
+                    response.raise_for_status()  # Raises an error for 4xx/5xx HTTP status codes
+                except requests.exceptions.RequestException as e:
+                    st.error(f"An error occurred: {e}")
+            
                 
-                # Print the response from the server
-                st.write("Response:", response.json())
-            except requests.exceptions.RequestException as e:
-                st.error(f"An error occurred: {e}")
+           
 
             
 
