@@ -264,3 +264,36 @@ if __name__=="__main__":
     app.config.from_object(config['development'])
     app.register_error_handler(404,pagina_no_encontrada)
     app.run()
+
+
+
+
+    @app.route('/usuario_deportes/<usuariocotilleo>', methods=['GET'])
+def listar_usuario_deportes(usuariocotilleo):
+    try:
+        cursor = conexion.connection.cursor()
+        sql= """
+        SELECT A.NOMBRE_DEPORTE, COUNT(A.ID_ACTIVIDAD)
+        FROM ACTIVIDADES A, USUARIOACTIVIDAD UA
+        WHERE A.ID_ACTIVIDAD=UA.ID_ACTIVIDAD AND UA.ID_USUARIO= '{0}'".format(usuariocotilleo)
+        GROUP BY A.NOMBRE_DEPORTE;
+        """
+        # Ejecutar la consulta con el valor de id_usuario
+        cursor.execute(sql)
+        datos = cursor.fetchall()
+
+        # Diccionario para guardar las actividades por usuario
+        deportes_por_usuario = {}
+
+        # Construir el diccionario con los datos obtenidos
+        for fila in datos:
+            deporte = fila[0]  # Nombre del deporte
+            cantidad = fila[1]  # Número de veces que hizo el deporte
+            deportes_por_usuario[deporte] = cantidad
+
+        # Retornar el diccionario en formato JSON
+        return jsonify({'deportes_por_usuario': deportes_por_usuario, 'mensaje': 'Actividades listadas correctamente'})
+    
+    except Exception as e:
+        return jsonify({'mensaje': 'Error al listar actividades', 'error': str(e)})
+
