@@ -180,6 +180,7 @@ if choice == 'Crear un evento':
             if submitted:
                 st.balloons()
                 st.write("Evento Registrado")
+
 if choice == 'FitoFito':
     col1, col2,col3 = st.columns(3)
     with col1:
@@ -187,27 +188,7 @@ if choice == 'FitoFito':
         usuariocotilleo=st.text_input("Introduce el Id del Usuario")
        url="http://127.0.0.1:5000/eventos/usuarios/"+usuariocotilleo
     try:
-        data = requests.get(url).json()
-        cursor = conexion.connection.cursor()
-        sql= """
-        SELECT A.NOMBRE_DEPORTE, COUNT(*)
-        FROM ACTIVIDADES A, USUARIOACTIVIDAD UA
-        WHERE A.ID_ACTIVIDAD=UA.ID_ACTIVIDAD AND UA.ID_USUARIO= '{0}'".format(usuariocotilleo)
-        GROUP BY A.NOMBRE_DEPORTE;
-        """
-        # Ejecutar la consulta con el valor de id_usuario
-        cursor.execute(sql)
-        datos = cursor.fetchall()
-
-        # Diccionario para guardar las actividades por usuario
-        deportes_por_usuario = {}
-
-        # Construir el diccionario con los datos obtenidos
-        for fila in datos:
-            deporte = fila[0]  # Nombre del deporte
-            cantidad = fila[1]  # Número de veces que hizo el deporte
-            deportes_por_usuario[deporte] = cantidad
-        # Extraer etiquetas y valores del diccionario
+      
        # Extraer etiquetas y valores del diccionario
         etiquetas = list(deportes_por_usuario.keys())
         valores = list(deportes_por_usuario.values())
@@ -220,8 +201,8 @@ if choice == 'FitoFito':
         ax.pie(valores, labels=etiquetas, autopct='%1.1f%%', startangle=90, colors=colores)
         ax.set_title('Deportes realizados por el usuario')
 
-# Mostrar el gráfico en Streamlit
+        # Mostrar el gráfico en Streamlit
         st.pyplot(fig)
     except requests.exceptions.RequestException as e:
-        st.write("")
-        
+        st.write("")
+
