@@ -258,25 +258,25 @@ INSERT INTO ACTIVIDADES(ID_ACTIVIDAD, NOMBRE_ACTIVIDAD, TEXTO, KM, FC, KCAL, DUR
 
 ('id_act28', 'Torneo Baloncesto', 'Participación en torneo local', 0, 140, 700, '01:30:00', NULL, 'Baloncesto'), 
 
-('id_act29', 'Entrenamiento Natacion', 'Sesión de entrenamiento de resistencia en piscina', 0, 125, 400, '00:45:00', NULL, 'Natación'),  
+('id_act29', 'Entrenamiento Natación', 'Sesión de entrenamiento de resistencia en piscina', 0, 125, 400, '00:45:00', NULL, 'Natación'),  
 
 ('id_act30', 'Natación Libre', 'Natación recreativa en piscina olímpica', 0, 110, 350, '00:30:00', NULL, 'Natación'), 
 
- ('id_act31', 'Competencia Natacion', 'Participacion en competencia de estilo libre', 0, 135, 600, '01:00:00', NULL, 'Natación'), 
+ ('id_act31', 'Competencia Natación', 'Participación en competencia de estilo libre', 0, 135, 600, '01:00:00', NULL, 'Natación'), 
 
 ('id_act32', 'Partido Rugby Amistoso', 'Partido amistoso de rugby con el equipo', 0, 150, 800, '01:20:00', NULL, 'Rugby'), 
 
-('id_act33', 'Entrenamiento Rugby', 'Entrenamiento de fuerza y tacticas de juego', 0, 140, 600, '01:00:00', NULL, 'Rugby'), 
+('id_act33', 'Entrenamiento Rugby', 'Entrenamiento de fuerza y tácticas de juego', 0, 140, 600, '01:00:00', NULL, 'Rugby'), 
 
-('id_act34', 'Torneo Rugby', 'Participacion en torneo regional de rugby', 0, 160, 900, '01:30:00', NULL, 'Rugby'), 
+('id_act34', 'Torneo Rugby', 'Participación en torneo regional de rugby', 0, 160, 900, '01:30:00', NULL, 'Rugby'), 
 
 ('id_act35', 'Kitesurf en Playa', 'Práctica de kitesurf en condiciones de viento moderado', 0, 130, 500, '01:00:00', NULL, 'Kitesurf'), 
 
-('id_act36', 'Competencia Kitesurf', 'Participacion en competencia de freestyle', 0, 140, 700, '01:30:00', NULL, 'Kitesurf'), 
+('id_act36', 'Competencia Kitesurf', 'Participación en competencia de freestyle', 0, 140, 700, '01:30:00', NULL, 'Kitesurf'), 
 
 ('id_act37', 'Entrenamiento Kitesurf', 'Sesión de entrenamiento de maniobras avanzadas', 0, 120, 450, '00:50:00', NULL, 'Kitesurf'),
 
-('id_act38', 'Vuelo de Parapente en Montana', 'Vuelo sobre un paisaje montanoso con vistas panorámicas', 0, 90, 250, '01:00:00', NULL, 'Parapente'), 
+('id_act38', 'Vuelo de Parapente en Montaña', 'Vuelo sobre un paisaje montañoso con vistas panorámicas', 0, 90, 250, '01:00:00', NULL, 'Parapente'), 
  
 
 ('id_act39', 'Entrenamiento de Parapente', 'Práctica de control y maniobras en parapente', 0, 85, 200, '00:45:00', NULL, 'Parapente'), 
@@ -296,7 +296,7 @@ INSERT INTO ACTIVIDADES(ID_ACTIVIDAD, NOMBRE_ACTIVIDAD, TEXTO, KM, FC, KCAL, DUR
 
 ('id_act45', 'Buceo Nocturno', 'Inmersión nocturna con observación de fauna marina', 0, 95, 280, '01:00:00', NULL, 'Buceo'),  
 
-('id_act46', 'Practica de Buceo', 'Sesion de entrenamiento en aguas abiertas', 0, 105, 320, '01:30:00', NULL, 'Buceo'); 
+('id_act46', 'Práctica de Buceo', 'Sesión de entrenamiento en aguas abiertas', 0, 105, 320, '01:30:00', NULL, 'Buceo'); 
 
  
 
