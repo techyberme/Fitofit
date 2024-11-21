@@ -291,8 +291,10 @@ def listar_usuario_deportes(usuariocotilleo):
             deportes_por_usuario[deporte] = cantidad
 
         # Retornar el diccionario en formato JSON
-        return jsonify({'deportes_por_usuario': deportes_por_usuario, 'mensaje': 'Actividades listadas correctamente'})
-    
+       return jsonify({
+    'deportes_por_usuario': f'Veces que {usuariocotilleo} ha hecho estos deportes',
+    'mensaje': 'Actividades listadas correctamente'})
+
     except Exception as e:
         return jsonify({'mensaje': 'Error al listar actividades', 'error': str(e)})
 
