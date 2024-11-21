@@ -267,13 +267,12 @@ if __name__=="__main__":
 
 
 
-
-    @app.route('/usuario_deportes/<usuariocotilleo>', methods=['GET'])
+@app.route('/usuario_deportes/<usuariocotilleo>', methods=['GET'])
 def listar_usuario_deportes(usuariocotilleo):
     try:
         cursor = conexion.connection.cursor()
         sql= """
-        SELECT A.NOMBRE_DEPORTE, COUNT(A.ID_ACTIVIDAD)
+        SELECT A.NOMBRE_DEPORTE, COUNT(*)
         FROM ACTIVIDADES A, USUARIOACTIVIDAD UA
         WHERE A.ID_ACTIVIDAD=UA.ID_ACTIVIDAD AND UA.ID_USUARIO= '{0}'".format(usuariocotilleo)
         GROUP BY A.NOMBRE_DEPORTE;
@@ -296,4 +295,3 @@ def listar_usuario_deportes(usuariocotilleo):
     
     except Exception as e:
         return jsonify({'mensaje': 'Error al listar actividades', 'error': str(e)})
-
