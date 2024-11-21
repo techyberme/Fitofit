@@ -295,3 +295,36 @@ def listar_usuario_deportes(usuariocotilleo):
     
     except Exception as e:
         return jsonify({'mensaje': 'Error al listar actividades', 'error': str(e)})
+
+
+
+    @app.route('/usuarios_actividades', methods=['GET'])
+def listar_usuarios_actividades():
+    try:
+        cursor = conexion.connection.cursor()
+        sql= """
+        SELECT U..NOMBRE_USUARIO, COUNT(UA.ID_ACTIVIDAD)
+        FROM USUARIOACTIVIDAD UA, USUARIOS U
+        WHERE UA.ID_USUARIO=U.ID_USUARIO
+        GROUP BY UA.ID_USUARIO
+        """
+        # Ejecutar la consulta con el valor de id_usuario
+        cursor.execute(sql)
+        datos = cursor.fetchall()
+
+        # Diccionario para guardar las actividades por usuario
+        usuarios_actividades = {}
+
+        # Construir el diccionario con los datos obtenidos
+        for fila in datos:
+            usuario = fila[0]  # Nombre del deporte
+            cantidad = fila[1]  # Número de veces que hizo el deporte
+            usuarios_actividades[usuario] = cantidad
+
+        # Retornar el diccionario en formato JSON
+        return jsonify({'Actividades de cada usuario': usuarios_actividades, 'mensaje': 'Actividades de cada usuario'})
+    
+    except Exception as e:
+        return jsonify({'mensaje': 'Error al listar actividades', 'error': str(e)})
+
+
