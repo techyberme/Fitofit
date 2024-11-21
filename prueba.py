@@ -180,7 +180,7 @@ if choice == 'Crear un evento':
             if submitted:
                 st.balloons()
                 st.write("Evento Registrado")
-f choice == 'FitoFito':
+if choice == 'FitoFito':
     col1, col2,col3 = st.columns(3)
     with col1:
         st.write("## ¿A quién quieres cotillear?")
