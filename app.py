@@ -329,4 +329,20 @@ def listar_usuarios_actividades():
     except Exception as e:
         return jsonify({'mensaje': 'Error al listar actividades', 'error': str(e)})
 
+@app.route('/usuarios/contrasena/<codigo>', methods= ['GET'])
+def obtener_contrasena(codigo):
+    try:
+        cursor =conexion.connection.cursor()
+
+        sql = "SELECT CONTRASENA FROM USUARIOS WHERE ID_USUARIO LIKE '%{0}'".format(codigo)
+        cursor.execute(sql)
+        fila=cursor.fetchone()
+        if fila:
+            return jsonify({'contrasena': fila[0]})
+        else:
+            return jsonify({'mensaje': 'Usuario no encontrado'})
+    
+    except Exception as ex:
+        return jsonify({'mensaje': 'Error al obtener la contraseña', 'error': str(ex)})
+
 
