@@ -133,24 +133,34 @@ def registrar_actividad():
     #print(request)
     try:
         cursor = conexion.connection.cursor()
-        sql = """INSERT INTO actividades
-        (ID_ACTIVIDAD,NOMBRE_ACTIVIDAD, TEXTO, KM, FC,KCAL, DURACION,ID_EVENTO,NOMBRE_DEPORTE)
-        VALUES ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}') """.format(request.json ['ID_ACTIVIDAD'],
-        request.json['NOMBRE_ACTIVIDAD'],
-        request.json['TEXTO'],
-        request.json['KM'],
-        request.json['FC'],
-        request.json['KCAL'],
-        request.json['DURACION'],
-        request.json['ID_EVENTO'],
-        request.json['NOMBRE_DEPORTE']
-            )
-        
-        cursor. execute(sql)
+
+    # Define the SQL query with placeholders
+        sql = """
+            INSERT INTO actividades
+            (ID_ACTIVIDAD, NOMBRE_ACTIVIDAD, TEXTO, KM, FC, KCAL, DURACION, ID_EVENTO, NOMBRE_DEPORTE)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """
+
+        # Extract the values from request.json
+        values = (
+            request.json.get('ID_ACTIVIDAD'),
+            request.json.get('NOMBRE_ACTIVIDAD'),
+            request.json.get('TEXTO'),
+            request.json.get('KM'),  # Will be None if not provided
+            request.json.get('FC'),
+            request.json.get('KCAL'),
+            request.json.get('DURACION'),
+            request.json.get('ID_EVENTO'),
+            request.json.get('NOMBRE_DEPORTE')
+        )
+
+        # Execute the query with parameters
+        cursor.execute(sql, values)
         conexion.connection.commit()
-#confirma acción inserción
-    #print(request.json)
+
+        # Confirm successful insertion
         return jsonify({'mensaje': 'actividad registrada'})
+
     except Exception as ex: 
         return jsonify({'mensaje': ex}) 
 
@@ -172,7 +182,28 @@ def registrar_usuarioactividad():
         return jsonify({'mensaje': 'actividad registrada'})
     except Exception as ex: 
         return jsonify({'mensaje': ex})    
-
+@app.route('/nuevousuario', methods= ['POST'])
+def registrar_usuario():
+    #print(request)
+    try:
+        cursor = conexion.connection.cursor()
+        sql = """INSERT INTO usuarios
+        (ID_USUARIO,NOMBRE_USUARIO,CORREO,CONTRASENA,FECHA_NAC,SEXO)
+        VALUES ('{0}','{1}','{2}','{3}','{4}','{5}') """.format(request.json ['ID_USUARIO'],
+        request.json['NOMBRE_USUARIO'],
+        request.json['CORREO'],
+        request.json['CONTRASENA'],
+        request.json['FECHA_NAC'],
+        request.json['SEXO']
+            )
+     
+        cursor. execute(sql)
+        conexion.connection.commit()
+#confirma acción inserción
+    #print(request.json)
+        return jsonify({'mensaje': 'usuario registrado'})
+    except Exception as ex: 
+        return jsonify({'mensaje': ex})    
 
 
 
@@ -226,9 +257,9 @@ def ultimo_usuario():
         cursor.execute(sql)
         datos= cursor.fetchall()
         fila =datos[-1]
-        actividad={'ID_ACTIVIDAD': fila[0]}
+        actividad={'ID_USUARIO': fila[0]}
         print(datos)
-        return jsonify({'usuario': actividad ,'mensaje': 'actividad'})
+        return jsonify({'usuario': actividad ,'mensaje': 'usuario'})
 
     except Exception as ex:
         return jsonify({'mensaje': ex})
