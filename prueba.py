@@ -3,49 +3,47 @@ import pandas as pd
 import requests
 import csv
 import time
+import numpy as np
+import matplotlib.pyplot as plt
 usuario="id_usuario_1"
-with st.sidebar:
-     nombre=""
-     bienvenida= 'Bienvenido a FitoFit!' + nombre
-     st.title(bienvenida)
-     st.info('Qué quieres hacer?')
-     choice = st.radio('Menú', ['Iniciar sesión','Tu actividad', 'Subir una actividad', 'Consultar un evento',"FitoFito","Crear un Evento"])
-if choice == 'Iniciar sesión':
+nombre=""
+
+with st.sidebar:   
     with st.form('Iniciar Sesión'):
         usuario=st.text_input("Usuario")
         contrasena=st.text_input("Contraseña")
         submitted = st.form_submit_button("Submit")
-        if submitted:
-                
+        if submitted:                   
                 url="http://127.0.0.1:5000/usuarios/contrasena/"+usuario
                 try:
                     dato = requests.get(url).json()
                     contra=dato["contrasena"]
-                    
+                        
                     if contra!=contrasena:
-                        usuario=0
-                        st.warning('Contraseña Incorrecta', icon="⚠️")
+                            usuario=0
+                            st.warning('Contraseña Incorrecta', icon="⚠️")
                     else:
-                        st.balloons()
+                            st.balloons()
 
                 except requests.exceptions.RequestException as e:
-                    st.write("")
+                        st.write("")
 
-                ##sacar nombre_usuario
+                    ##sacar nombre_usuario
                 url="http://127.0.0.1:5000/usuarios/nombre_usuario/"+ usuario
                 try:
-                    dato = requests.get(url).json()
-                    nombre=dato["nombre_usuario"]
-                    with st.sidebar:
-                            bienvenida= 'Te damos la bienvenida a FitoFit,' + nombre +'!'
-                            st.title(bienvenida)
+                        dato = requests.get(url).json()
+                        nombre=dato["nombre_usuario"]
+                        nombre=", "+nombre[0:nombre.index(" ")]
+                                
                 except requests.exceptions.RequestException as e:
-                    st.write("")
-
-    
+                        st.write("")
+        bienvenida= 'Te damos la bienvenida a FitoFit' + nombre +'!'
+        st.title(bienvenida)
+    st.info('Qué quieres hacer?')
+    choice = st.radio('Menú', ['Tu actividad', 'Subir una actividad', 'Consultar un evento',"FitoFito","Crear un Evento"])   
 if choice == 'Tu actividad':
-     st.write("Input Carrera")
-     st.title('Gráfica de precios')
+    st.write("Input Carrera")
+    st.title('Gráfica de precios')
      
 if choice == 'Subir una actividad':
     st.write("""
@@ -59,7 +57,6 @@ if choice == 'Subir una actividad':
         id_act = int(id_act[(id_act.index('t') + 1):]) # Start just after 't'
         id=id_act+1
         id_act= f"id_act{id}"
-        st.write(id_act)
     except requests.exceptions.RequestException as e:
         st.write("")
     col1, col2 = st.columns(2)
@@ -78,21 +75,36 @@ if choice == 'Subir una actividad':
             deporte= option      
             if option == "Otro":        
              deporte = st.text_input("Deporte")
+             km = None
             desc = st.text_input("Descripción")
             fc = st.text_input("FC")
             dur=st.text_input("duracion")
-            km = None
+             
             if option in ["CARRERA", "CICLISMO"]:
                 km = st.text_input("KM")
-            else:
-                km = "NULL"
-            
             kcal = st.text_input("Kcal")
 
             
             submitted = st.form_submit_button("Submit")
             if submitted:
-                st.balloons()
+                #st.balloons()
+                print(usuario)
+                ##mirar esto
+                dict1= {
+                    "ID_USUARIO" : usuario,
+                    "ID_ACTIVIDAD" : id_act  
+                }
+                url="http://127.0.0.1:5000/usuarioactividad"
+
+
+                try:
+                # Sending POST request with data as JSON
+                    response = requests.post(url, json=dict1)
+                
+                # Check if the request was successful
+                    response.raise_for_status()  # Raises an error for 4xx/5xx HTTP status codes
+                except requests.exceptions.RequestException as e:
+                    st.error(f"An error occurred: {e}")
                 dict= {
                     "ID_ACTIVIDAD" : id_act,
                     "NOMBRE_ACTIVIDAD": nombre,
@@ -117,22 +129,7 @@ if choice == 'Subir una actividad':
                     st.error(f"An error occurred: {e}")
 
                 
-                ##mirar esto
-                dict1= {
-                    "ID_USUARIO" : usuario,
-                    "ID_ACTIVIDAD" : id_act  
-                }
-                url="http://127.0.0.1:5000/usuarioactividad"
-
-
-                try:
-                # Sending POST request with data as JSON
-                    response = requests.post(url, json=dict1)
                 
-                # Check if the request was successful
-                    response.raise_for_status()  # Raises an error for 4xx/5xx HTTP status codes
-                except requests.exceptions.RequestException as e:
-                    st.error(f"An error occurred: {e}")
             
                 
            
@@ -147,22 +144,49 @@ if choice == 'Consultar un evento':
     url="http://127.0.0.1:5000/eventos/lugar/"+city
     try:
         data = requests.get(url).json()
-        st.write("#### ¡Hemos encontrado los siguientes eventos en tu zona!")
-        st.write("#### El evento",data["ciudades"]["ID_EVENTO"], "será el ",data["ciudades"]["FECHA"],"a las",data["ciudades"]["HORA"],"y tiene un costo de",data["ciudades"]["PRECIO"],"€")
+        try:
+            print(data["ciudades"][0])   ##lo hago para que salte la excepción antes de que se printee el titulo
+            st.write("#### ¡Hemos encontrado los siguientes eventos en tu zona!")
+            
+            for i in range(len(data["ciudades"])):
+                st.write("El evento",data["ciudades"][i]["ID_EVENTO"], "será el ",data["ciudades"][i]["FECHA"],"a las",data["ciudades"][i]["HORA"],"y tiene un costo de",data["ciudades"][i]["PRECIO"],"€")
+        except Exception:
+            st.write(f"#### No hemos encontrado eventos en {city}")
     except requests.exceptions.RequestException as e:
         st.write("")
 
 
 ##aquí tengo que hacer una consulta y devolveré un gráfico con las actividades del usuario,desglosado por deportes
 if choice == 'FitoFito':
-    st.write("## ¿A quién quieres cotillear?")
-    usuariocotilleo=st.text_input("Introduce el Id del Usuario")
-    url="http://127.0.0.1:5000/eventos/usuarios/"+usuariocotilleo
-    try:
-        data = requests.get(url).json()
-        st.write("#### Aquí tienes un resuman de la actividad de",data["usuarios"]["nombre_usuario"])
-    except requests.exceptions.RequestException as e:
-        st.write("")
+        id= st.text_input("### A quién quieres cotillear")
+        url="http://127.0.0.1:5000/usuario_deportes/" + id
+        try:
+            data = requests.get(url).json()
+             
+            # Extraer etiquetas y valores del diccionario
+            etiquetas = list(data["deportes_por_usuario"].keys())
+            valores = list(data["deportes_por_usuario"].values())
+
+            # Generar colores aleatorios en formato hexadecimal
+            colores = ['#%06X' % np.random.randint(0, 0xFFFFFF) for _ in range(len(data["deportes_por_usuario"]))]
+            url="http://127.0.0.1:5000/usuarios/nombre_usuario/"+ id
+            try:
+                        dato = requests.get(url).json()
+                        name=dato["nombre_usuario"]
+                                
+            except requests.exceptions.RequestException as e:
+                        st.write("")
+            # Crear gráfico de pastel
+            fig, ax = plt.subplots(figsize=(6, 6))
+            ax.pie(valores, labels=etiquetas, autopct='%1.1f%%', startangle=90, colors=colores)
+            ax.set_title(f'Deportes realizados por {name}')
+
+            # Mostrar el gráfico en Streamlit
+            st.pyplot(fig)
+
+
+        except requests.exceptions.RequestException as e:
+            st.write("")
 
 if choice == 'Crear un evento':
     st.write("Aquí puedes crear tu propio evento!")
@@ -180,29 +204,4 @@ if choice == 'Crear un evento':
             if submitted:
                 st.balloons()
                 st.write("Evento Registrado")
-
-if choice == 'FitoFito':
-    col1, col2,col3 = st.columns(3)
-    with col1:
-        st.write("## ¿A quién quieres cotillear?")
-        usuariocotilleo=st.text_input("Introduce el Id del Usuario")
-       url="http://127.0.0.1:5000/eventos/usuarios/"+usuariocotilleo
-    try:
-      
-       # Extraer etiquetas y valores del diccionario
-        etiquetas = list(deportes_por_usuario.keys())
-        valores = list(deportes_por_usuario.values())
-
-        # Generar colores aleatorios en formato hexadecimal
-        colores = ['#%06X' % np.random.randint(0, 0xFFFFFF) for _ in range(len(diccionario))]
-
-        # Crear gráfico de pastel
-        fig, ax = plt.subplots(figsize=(6, 6))
-        ax.pie(valores, labels=etiquetas, autopct='%1.1f%%', startangle=90, colors=colores)
-        ax.set_title('Deportes realizados por el usuario')
-
-        # Mostrar el gráfico en Streamlit
-        st.pyplot(fig)
-    except requests.exceptions.RequestException as e:
-        st.write("")
-
+        
