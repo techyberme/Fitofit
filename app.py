@@ -96,6 +96,71 @@ def listar_actividades():
     except Exception as ex:
         return jsonify({'mensaje': ex})
 
+@app.route('/todo', methods= ['GET'])
+def listar_todo():
+    try:
+        cursor =conexion.connection.cursor()
+        sql = "SELECT * FROM V_RESUMEN_FINAL"
+        cursor.execute(sql)
+        datos= cursor.fetchall()
+        todo=[]
+        for fila in datos:
+            actividad={'LOCALIZACION': fila[0],'NOMBRE_USUARIO': fila[1],'NOMBRE_DEPORTE': fila[2],
+                       'EDAD': fila[3]}
+            todo.append(actividad)
+        print(datos)
+        return jsonify({'actividad': todo ,'mensaje': 'actividades'})
+
+    except Exception as ex:
+        return jsonify({'mensaje': ex})
+@app.route('/todos/<codigo>/<codigo1>', methods= ['GET'])
+def leer_todos(codigo,codigo1):
+    try:
+        cursor =conexion.connection.cursor()
+        sql = f"SELECT DISTINCT * FROM V_RESUMEN_FINAL WHERE LOCALIZACION LIKE '%{codigo}' AND EDAD = {codigo1}"
+        cursor.execute(sql)
+        datos=cursor.fetchall()
+        eventos =[]
+        if datos == None:
+            return jsonify({'mensaje': 'ciudad no encontrada'})
+        else: 
+            eventos =[]
+            for fila in datos:
+                evento={'LOCALIZACION': fila[0],'NOMBRE_USUARIO': str(fila[1]),'NOMBRE_DEPORTE':str(fila[2]),
+                        'EDAD':fila[3]}
+                eventos.append(evento)
+            print(eventos)
+            return jsonify({'ciudades': eventos,'mensaje': 'ciudad encontrada'})
+    except Exception as ex:
+        return jsonify({'mensaje': sql})
+    
+@app.route('/kcals/<codigo>', methods= ['GET'])
+def kcals(codigo):
+    try:
+        cursor = conexion.connection.cursor()
+        sql= """
+        SELECT A.NOMBRE_DEPORTE , UA.ID_USUARIO, AVG(KCAL)
+        FROM ACTIVIDADES A, USUARIOACTIVIDAD UA
+        WHERE A.ID_ACTIVIDAD=UA.ID_ACTIVIDAD AND UA.ID_USUARIO= '{0}'
+        GROUP BY A.NOMBRE_DEPORTE""".format(codigo)
+        
+        # Ejecutar la consulta con el valor de id_usuario
+        cursor.execute(sql)
+        datos = cursor.fetchall()
+
+        # Diccionario para guardar las kcal de actividades
+        kcals=[]
+
+        # Construir el diccionario con los datos obtenidos
+        
+        for fila in datos:
+            kcal={'NOMBRE_DEPORTE': fila[0],'ID_USUARIO': fila[1],'KCAL': fila[2]}
+            kcals.append(kcal)
+
+        # Retornar el diccionario en formato JSON
+        return jsonify({'kcal_por_deporte_por_usuario': kcals, 'mensaje': 'Actividades listadas correctamente'})
+    except Exception as ex:
+        return jsonify({'mensaje': ex})
 
                         
 ##REGISTROS
@@ -347,6 +412,18 @@ def obtener_nombre(codigo):
     except Exception as ex:
         return jsonify({'mensaje': 'Error al obtener el usuario', 'error': str(ex)})
 
+##eliminar
+@app.route('/eliminarusuario/<codigo>', methods= ['DELETE'])
+def eliminar_usuario(codigo):
+    try: 
+        cursor = conexion.connection.cursor() 
+        sql = "DELETE FROM usuarios WHERE ID_USUARIO = '{0}'".format(codigo)
+        cursor. execute(sql) 
+        conexion.connection.commit() 
+        return jsonify({'mensaje': 'usuario eliminado'}) 
+
+    except Exception as ex: 
+        return jsonify({'mensaje': "error"}) 
 
 def pagina_no_encontrada(error):
     return "<h1> la pagina no existe </h1>", 404
@@ -355,48 +432,3 @@ if __name__=="__main__":
     app.config.from_object(config['development'])
     app.register_error_handler(404,pagina_no_encontrada)
     app.run()
-
-
-@app.route('/todo', methods= ['GET'])
-def listar_todo():
-    try:
-        cursor =conexion.connection.cursor()
-        sql = "SELECT * FROM V_RESUMEN_FINAL"
-        cursor.execute(sql)
-        datos= cursor.fetchall()
-        todo=[]
-        for fila in datos:
-            actividad={'LOCALIZACION': fila[0],'NOMBRE_USUARIO': fila[1],'NOMBRE_DEPORTE': fila[2],
-                       'EDAD': fila[3]}
-            todo.append(actividad)
-        print(datos)
-        return jsonify({'actividad': todo ,'mensaje': 'actividades'})
-
-    except Exception as ex:
-        return jsonify({'mensaje': ex})
-
-def listar_usuario_kcal(usuariocotilleo):
-    try:
-        cursor = conexion.connection.cursor()
-        sql= """
-        SELECT A.NOMBRE_DEPORTE , UA.ID_USUARIO, AVG(KCAL)
-        FROM ACTIVIDADES A, USUARIOACTIVIDAD UA
-        WHERE A.ID_ACTIVIDAD=UA.ID_ACTIVIDAD AND UA.ID_USUARIO= '{0}'
-        GROUP BY A.NOMBRE_DEPORTE""".format(usuariocotilleo)
-        
-        # Ejecutar la consulta con el valor de id_usuario
-        cursor.execute(sql)
-        datos = cursor.fetchall()
-
-        # Diccionario para guardar las kcal de actividades
-        kcal_por_usuario_deporte = {}
-
-        # Construir el diccionario con los datos obtenidos
-        for fila in datos:
-            deporte = fila[0]  # Nombre del deporte
-            kcal = fila[1]  # Número de kcal
-            kcal_por_usuario_deporte[deporte] = kcal
-
-        # Retornar el diccionario en formato JSON
-        return jsonify({'kcal_por_deporte_por_usuario': kcal_por_usuario_deporte, 'mensaje': 'Actividades listadas correctamente'})
-
