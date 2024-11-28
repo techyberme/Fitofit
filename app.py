@@ -374,3 +374,29 @@ def listar_todo():
 
     except Exception as ex:
         return jsonify({'mensaje': ex})
+
+def listar_usuario_kcal(usuariocotilleo):
+    try:
+        cursor = conexion.connection.cursor()
+        sql= """
+        SELECT A.NOMBRE_DEPORTE , UA.ID_USUARIO, AVG(KCAL)
+        FROM ACTIVIDADES A, USUARIOACTIVIDAD UA
+        WHERE A.ID_ACTIVIDAD=UA.ID_ACTIVIDAD AND UA.ID_USUARIO= '{0}'
+        GROUP BY A.NOMBRE_DEPORTE""".format(usuariocotilleo)
+        
+        # Ejecutar la consulta con el valor de id_usuario
+        cursor.execute(sql)
+        datos = cursor.fetchall()
+
+        # Diccionario para guardar las kcal de actividades
+        kcal_por_usuario_deporte = {}
+
+        # Construir el diccionario con los datos obtenidos
+        for fila in datos:
+            deporte = fila[0]  # Nombre del deporte
+            kcal = fila[1]  # Número de kcal
+            kcal_por_usuario_deporte[deporte] = kcal
+
+        # Retornar el diccionario en formato JSON
+        return jsonify({'kcal_por_deporte_por_usuario': kcal_por_usuario_deporte, 'mensaje': 'Actividades listadas correctamente'})
+
