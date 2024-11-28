@@ -255,3 +255,22 @@ if choice == 'Crear un evento':
                 st.balloons()
                 st.write("Evento Registrado")
         
+if choice == 'Consultar actividades por edad y ciudad':
+    col1, col2,col3 = st.columns(3)
+    with col1:
+        city= st.text_input("### dime dónde quieres las actividades")
+    with col2:
+        edad= st.text_input("### dime de qué edad buscas gente")
+    url="http://127.0.0.1:5000/actividades/todo/"+city+"/"+edad
+    try:
+        data = requests.get(url).json()
+        try:
+            print(data["localizacion"]["edad"][0])   ##lo hago para que salte la excepción antes de que se printee el titulo
+            st.write("#### ¡Hemos encontrado las siguientes actividades en tu zona y con tu edad!")
+            
+            for i in range(len(data["localizacion"]["edad"])):
+                st.write("La actividad",data["localizacion"][i]["LOCALIZACION"], "hecho/a por  ",data["localizacion"][i]["NOMBRE_USUARIO"],"con ",data["localizacion"][i]["EDAD"],"del deporte",data["localizacion"][i]["NOMBRE_DEPORTE"])
+        except Exception:
+            st.write(f"#### No hemos encontrado actividades en {city}")
+    except requests.exceptions.RequestException as e:
+        st.write("")
