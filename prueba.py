@@ -10,7 +10,7 @@ usuario="id_usuario_1"
 nombre=""
 
 with st.sidebar:  
-    sesion = st.radio(" ",['Iniciar Sesión', 'Nuevo Usuario'])  
+    sesion = st.radio(" ",['Iniciar Sesión', 'Nuevo Usuario','Eliminar Cuenta'])  
     if sesion=='Iniciar Sesión':
         with st.form('Iniciar Sesión'):
             usuario=st.text_input("Usuario")
@@ -20,26 +20,34 @@ with st.sidebar:
                     url="http://127.0.0.1:5000/usuarios/contrasena/"+usuario
                     try:
                         dato = requests.get(url).json()
+                        
+                        x=list(dato.keys())
+                        print(x[0])
+                        print("hola")
+                        if x =='mensaje':                           
+                            raise Exception("Sorry, no numbers below zero")
                         contra=dato["contrasena"]
-                            
                         if contra!=contrasena:
                                 usuario=0
                                 st.warning('Contraseña Incorrecta', icon="⚠️")
                         else:
                                 st.balloons()
-
-                    except requests.exceptions.RequestException as e:
-                            st.write("")
-
-                        ##sacar nombre_usuario
-                    url="http://127.0.0.1:5000/usuarios/nombre_usuario/"+ usuario
-                    try:
-                            dato = requests.get(url).json()
-                            nombre=dato["nombre_usuario"]
-                            nombre=", "+nombre[0:nombre.index(" ")]
+                                ##sacar nombre_usuario
+                                url="http://127.0.0.1:5000/usuarios/nombre_usuario/"+ usuario
+                                try:
+                                    dato = requests.get(url).json()
+                                    nombre=dato["nombre_usuario"]
+                                    nombre=", "+nombre[0:nombre.index(" ")]
                                     
+                                except requests.exceptions.RequestException as e:
+                                    st.write("")
+                                
                     except requests.exceptions.RequestException as e:
                             st.write("")
+                    except Exception as e:
+                            st.write("")
+
+                        
             bienvenida= 'Te damos la bienvenida a FitoFit' + nombre +'!'
             st.title(bienvenida)
     if sesion=='Nuevo Usuario': 
@@ -86,38 +94,67 @@ with st.sidebar:
                         response.raise_for_status()  # Raises an error for 4xx/5xx HTTP status codes
                 except requests.exceptions.RequestException as e:
                         st.error(f"An error occurred: {e}")
+    if sesion=='Eliminar Cuenta':
+         with st.form('Iniciar Sesión'):
+            usuario=st.text_input("Usuario")
+            contrasena=st.text_input("Contraseña",type="password")
+            submitted = st.form_submit_button("Submit")
+            if submitted:                   
+                    url="http://127.0.0.1:5000/usuarios/contrasena/"+usuario
+                    try:
+                        dato = requests.get(url).json()
+                        contra=dato["contrasena"]
+                            
+                        if contra!=contrasena:
+                                usuario=0  ##error
+                                st.warning('Contraseña Incorrecta, prueba de nuevo', icon="⚠️")
+                        else:
+                            url = "http://127.0.0.1:5000/eliminarusuario/" + usuario
+                            try:
+                                response = requests.delete(url)  # Send DELETE request
+                                response.raise_for_status()  # Raise an error if the request fails (4xx or 5xx response codes)
+                                st.write("¡Esperamos volver a verte pronto!")
+                            except requests.exceptions.RequestException as e:
+                                st.error(f"An error occurred: {e}")  # Handle errors
 
+                            
+
+                    except requests.exceptions.RequestException as e:
+                            st.write("")
+                     
     st.info('Qué quieres hacer?')
-    choice = st.radio('Menú', ['Tu actividad', 'Subir una actividad', 'Consultar un evento',"FitoFito","Crear un Evento"])   
+    choice = st.radio('Menú', ['Tu actividad', 'Subir una actividad', 'Consultar un evento',"FitoFito","Encuentra Paisanos de tu edad"])   
 if choice == 'Tu actividad':
     st.write("Input Carrera")
     st.title('Gráfica de precios')
      
 if choice == 'Subir una actividad':
-    st.write("""
-## ¡¿Qué has hecho hoy?!
+    if usuario =="":
+         st.write("## Primero, inicia sesión")
+    if usuario !="":
+        st.write("""
+    ## ¡¿Qué has hecho hoy?!
 
-""")
-    url="http://127.0.0.1:5000/ultimaactividad"
-    try:
-        dato = requests.get(url).json()
-        id_act=dato["actividad"]["ID_ACTIVIDAD"]
-        id_act = int(id_act[(id_act.index('t') + 1):]) # Start just after 't'
-        id=id_act+1
-        id_act= f"id_act{id}"
-    except requests.exceptions.RequestException as e:
-        st.write("")
-    col1, col2 = st.columns(2)
-    on = col2.toggle("¿Ha sido parte de algún evento?")
-    if on:
-            with col2:
-                event=st.text_input("Nombre del Evento")
-    with col1:
-        option = st.selectbox(
-                "Deporte",
-                ('CARRERA', 'CICLISMO', 'Otro'),
-            )
-        if usuario !="":
+    """)
+        url="http://127.0.0.1:5000/ultimaactividad"
+        try:
+            dato = requests.get(url).json()
+            id_act=dato["actividad"]["ID_ACTIVIDAD"]
+            id_act = int(id_act[(id_act.index('t') + 1):]) # Start just after 't'
+            id=id_act+1
+            id_act= f"id_act{id}"
+        except requests.exceptions.RequestException as e:
+            st.write("")
+        col1, col2 = st.columns(2)
+        on = col2.toggle("¿Ha sido parte de algún evento?")
+        if on:
+                with col2:
+                    event=st.text_input("Nombre del Evento")
+        with col1:
+            option = st.selectbox(
+                    "Deporte",
+                    ('CARRERA', 'CICLISMO', 'Otro'),
+                )
             with st.form("my_form"):
                 # User selects the type of sport
                 nombre = st.text_input("Nombre de la actividad")
@@ -238,39 +275,23 @@ if choice == 'FitoFito':
         except requests.exceptions.RequestException as e:
             st.write("")
 
-if choice == 'Crear un evento':
-    st.write("Aquí puedes crear tu propio evento!")
-    col1, col2 = st.columns(2)
-    with col1:
-        with st.form("my_form"):
-            # User selects the type of sport
-            nombre= st.text_input("Nombre del evento")   
-            deporte = st.text_input("Deporte")
-            desc = st.text_input("Descripción")
-            loc = st.text_input("Localización")
-            hora= st.text_input("hour")
-            plazas=st.text_input("plazas")
-            submitted = st.form_submit_button("Submit")
-            if submitted:
-                st.balloons()
-                st.write("Evento Registrado")
-        
-if choice == 'Consultar actividades por edad y ciudad':
+if choice == 'Encuentra Paisanos de tu edad':
     col1, col2,col3 = st.columns(3)
     with col1:
         city= st.text_input("### dime dónde quieres las actividades")
     with col2:
         edad= st.text_input("### dime de qué edad buscas gente")
-    url="http://127.0.0.1:5000/actividades/todo/"+city+"/"+edad
+    url="http://127.0.0.1:5000/todos/"+city+"/"+edad
     try:
         data = requests.get(url).json()
         try:
-            print(data["localizacion"]["edad"][0])   ##lo hago para que salte la excepción antes de que se printee el titulo
-            st.write("#### ¡Hemos encontrado las siguientes actividades en tu zona y con tu edad!")
-            
-            for i in range(len(data["localizacion"]["edad"])):
-                st.write("La actividad",data["localizacion"][i]["LOCALIZACION"], "hecho/a por  ",data["localizacion"][i]["NOMBRE_USUARIO"],"con ",data["localizacion"][i]["EDAD"],"del deporte",data["localizacion"][i]["NOMBRE_DEPORTE"])
+            print(data["ciudades"][0])   ##lo hago para que salte la excepción antes de que se printee el titulo
+            st.write("#### ¡Hemos encontrado las siguientes actividades en tu zona y con tu edad!")           
+            for i in range(len(data["ciudades"])):
+                st.write("La actividad en ",data["ciudades"][i]["LOCALIZACION"], "hecha por  ",data["ciudades"][i]["NOMBRE_USUARIO"],"con ",data["ciudades"][i]["EDAD"],",del deporte",data["ciudades"][i]["NOMBRE_DEPORTE"])
         except Exception:
-            st.write(f"#### No hemos encontrado actividades en {city}")
+            st.write(f"#### No hemos encontrado personas de tu edad que sean fitofitters en {city}:-1:")
     except requests.exceptions.RequestException as e:
         st.write("")
+
+ 
