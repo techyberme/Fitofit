@@ -55,11 +55,7 @@ CREATE TABLE ACTIVIDADES(ID_ACTIVIDAD VARCHAR(10) NOT NULL,
 			FOREIGN KEY(NOMBRE_DEPORTE) REFERENCES DEPORTES(NOMBRE_DEPORTE))
 ENGINE= InnoDB;
 
-CREATE VIEW  V_RESUMEN_FINAL AS  SELECT  E.LOCALIZACION, U.NOMBRE_USUARIO, D.NOMBRE_DEPORTE, 
-	YEAR(CURRENT_DATE) - YEAR(U.FECHA_NAC)   AS EDAD
-	FROM EVENTOS E, DEPORTES D, ACTIVIDADES A, USUARIOS U , USUARIOACTIVIDAD UA, ACTIVIDADES A1,
-	ACTIVIDADES A2 WHERE  E.ID_EVENTO = A.ID_EVENTO AND A2.NOMBRE_DEPORTE = D.NOMBRE_DEPORTE  AND
-	U.ID_USUARIO = UA.ID_USUARIO AND UA.ID_ACTIVIDAD = A1.ID_ACTIVIDAD 
+
 
 
 
@@ -282,13 +278,9 @@ INSERT INTO ACTIVIDADES(ID_ACTIVIDAD, NOMBRE_ACTIVIDAD, TEXTO, KM, FC, KCAL, DUR
 
 ('id_act38', 'Vuelo de Parapente en Montaña', 'Vuelo sobre un paisaje montañoso con vistas panorámicas', 0, 90, 250, '01:00:00', NULL, 'Parapente'), 
  
-
 ('id_act39', 'Entrenamiento de Parapente', 'Práctica de control y maniobras en parapente', 0, 85, 200, '00:45:00', NULL, 'Parapente'), 
  
-
 ('id_act40', 'Competencia de Parapente', 'Participación en una competencia de vuelo de distancia', 0, 100, 300, '02:30:00', NULL, 'Parapente'),
-
- 
 
 ('id_act41', 'Partido de Volleyball', 'Juego recreativo de volleyball en la playa', 0, 120, 350, '01:15:00', NULL, 'Volley'),  
 
