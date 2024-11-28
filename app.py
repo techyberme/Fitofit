@@ -355,3 +355,22 @@ if __name__=="__main__":
     app.config.from_object(config['development'])
     app.register_error_handler(404,pagina_no_encontrada)
     app.run()
+
+
+@app.route('/todo', methods= ['GET'])
+def listar_todo():
+    try:
+        cursor =conexion.connection.cursor()
+        sql = "SELECT * FROM V_RESUMEN_FINAL"
+        cursor.execute(sql)
+        datos= cursor.fetchall()
+        todo=[]
+        for fila in datos:
+            actividad={'LOCALIZACION': fila[0],'NOMBRE_USUARIO': fila[1],'NOMBRE_DEPORTE': fila[2],
+                       'EDAD': fila[3]}
+            todo.append(actividad)
+        print(datos)
+        return jsonify({'actividad': todo ,'mensaje': 'actividades'})
+
+    except Exception as ex:
+        return jsonify({'mensaje': ex})
