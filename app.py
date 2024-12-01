@@ -161,6 +161,32 @@ def kcals(codigo):
     except Exception as ex:
         return jsonify({'mensaje': ex})
 
+@app.route('/eventos_mes/<codigo>', methods= ['GET'])
+def eventos_mes(codigo):
+    try:
+        cursor = conexion.connection.cursor()
+        sql= """
+        SELECT  MONTH(FECHA), UA.ID_USUARIO , COUNT(A.ID_EVENTO)
+        FROM ACTIVIDADES A, USUARIOACTIVIDAD UA, EVENTOS E
+        WHERE A.ID_ACTIVIDAD=UA.ID_ACTIVIDAD AND E.ID_EVENTO = A.ID_EVENTO AND UA.ID_USUARIO= '{0}'
+        GROUP BY MONTH(FECHA)""".format(codigo)
+        
+        # Ejecutar la consulta con el valor de id_usuario
+        cursor.execute(sql)
+        datos = cursor.fetchall()
+
+        # Diccionario para guardar el numero de eventos de cada mes por usuario
+        eventos_mes={}
+
+        # Construir el diccionario con los datos obtenidos
+        for fila in datos:
+            eventos_mes[fila[0]]=int(fila[2])
+             
+
+        # Retornar el diccionario en formato JSON
+        return jsonify({'eventos_mes_usuario': eventos_mes, 'mensaje': 'Actividades listadas correctamente'})
+    except Exception as ex:
+        return jsonify({'mensaje': ex})
 
 ##REGISTROS
 
