@@ -149,16 +149,17 @@ def kcals(codigo):
         datos = cursor.fetchall()
 
         # Diccionario para guardar las kcal de actividades
-        kcals=[]
+        kcal_por_deporte_por_usuario={}
 
         # Construir el diccionario con los datos obtenidos
         
         for fila in datos:
-            kcal={'NOMBRE_DEPORTE': fila[0],'ID_USUARIO': fila[1],'KCAL': fila[2]}
-            kcals.append(kcal)
+            deporte = fila[0]
+            kcal_promedio = fila[1]
+            kcal_por_deporte_por_usuario[deporte] = kcal_promedio
 
         # Retornar el diccionario en formato JSON
-        return jsonify({'kcal_por_deporte_por_usuario': kcals, 'mensaje': 'Actividades listadas correctamente'})
+        return jsonify({'kcal_por_deporte_por_usuario': kcals_por_deporte_por_usuario, 'mensaje': 'Actividades listadas correctamente'})
     except Exception as ex:
         return jsonify({'mensaje': ex})
 
