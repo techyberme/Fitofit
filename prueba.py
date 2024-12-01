@@ -158,6 +158,31 @@ if choice == 'Tu actividad':
                 st.pyplot(fig)
         except requests.exceptions.RequestException as e:
             st.write("")
+
+        url="http://127.0.0.1:5000/eventos_mes/" + usuario
+        try:
+                data = requests.get(url).json()
+                # Extraer etiquetas y valores del diccionario
+                etiquetas = list(data["eventos_mes_usuario"].keys())
+                valores = list(data["eventos_mes_usuario"].values())
+                print(valores)
+                print(etiquetas)
+                df=pd.DataFrame(data=valores,index=etiquetas,columns=[''])
+                print(df)
+                df.to_csv("results.csv")
+
+                # Generar colores aleatorios en formato hexadecimal
+                colores = ['#%06X' % np.random.randint(0, 0xFFFFFF) for _ in range(len(data["eventos_mes_usuario"]))]
+                fig, ax = plt.subplots(figsize=(6, 6))
+                ax.scatter(etiquetas, valores,color=colores,marker='*')
+                ax.set_title(f'Eventos por mes y usuario')
+                ax.set_xlabel('Mes')
+                ax.set_ylabel('Numero de eventos')
+                
+                # Mostrar el gráfico en Streamlit
+                st.pyplot(fig)
+        except requests.exceptions.RequestException as e:
+            st.write("")
      
 if choice == 'Subir una actividad':
     if usuario =="":
