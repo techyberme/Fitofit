@@ -275,6 +275,40 @@ if choice == 'FitoFito':
         except requests.exceptions.RequestException as e:
             st.write("")
 
+if choice == 'Estadisticas usuario':
+        id= st.text_input("### Promedio de kcal del usuario por deporte")
+        url="http://127.0.0.1:5000/usuario_deportes/" + id
+        try:
+            data = requests.get(url).json()
+             
+            # Extraer etiquetas y valores del diccionario
+            etiquetas = list(data["kcal_por_deporte_por_usuario"].keys())
+            valores = list(data["kcal_por_deporte_por_usuario"].values())
+
+            # Generar colores aleatorios en formato hexadecimal
+            colores = ['#%06X' % np.random.randint(0, 0xFFFFFF) for _ in range(len(data["kcal_por_deporte_por_usuario"]))]
+            url="http://127.0.0.1:5000/usuarios/nombre_usuario/"+ id
+            try:
+                        dato = requests.get(url).json()
+                        name=dato["nombre_usuario"]
+                                
+            except requests.exceptions.RequestException as e:
+                        st.write("")
+            # Crear gráfico de pastel
+            fig, ax = plt.subplots(figsize=(6, 6))
+            ax.bar(etiquetas, valores,colors=colores)
+            ax.set_title(f'Kcal promedio por deporte de {name}')
+            ax.set_xlabel('Deportes')
+            ax.set_ylabel('Kcal promedio')
+            
+            # Mostrar el gráfico en Streamlit
+            st.pyplot(fig)
+
+
+        except requests.exceptions.RequestException as e:
+            st.write("")
+
+
 if choice == 'Encuentra Paisanos de tu edad':
     col1, col2,col3 = st.columns(3)
     with col1:
