@@ -1,0 +1,6 @@
+Nombre,Descripción,KM,FC,KCAL,Duración,ID_EVENTO,NOMBRE_DEPORTE
+Carrera 5K,Una carrera divertida de 5 kilómetros,5,150,350,00:30:00,NULL,Carrera
+Maratón 42K,Una exigente maratón para expertos,42,500,1000,04:00:00,NULL,Carrera
+Escalada al Cielo,Competencia de escalada en roca,1,30,50,01:30:00,NULL,Escalada
+Torneo Rugby,Juego amistoso entre equipos locales,0,80,120,01:20:00,NULL,Rugby
+Carrera Nocturna,Un evento especial en la noche,10,200,400,01:00:00,NULL,Carrera
