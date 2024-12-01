@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import datetime
 usuario=""
-nombre=""
+name=""
 with st.sidebar: 
     sesion = st.radio(" ",['Iniciar Sesión', 'Nuevo Usuario','Eliminar Cuenta'])  
     if sesion=='Iniciar Sesión':
@@ -21,8 +21,6 @@ with st.sidebar:
                         dato = requests.get(url).json()
                         
                         x=list(dato.keys())
-                        print(x[0])
-                        print("hola")
                         if x =='mensaje':                           
                             raise Exception()
                         contra=dato["contrasena"]
@@ -35,8 +33,8 @@ with st.sidebar:
                                 url="http://127.0.0.1:5000/usuarios/nombre_usuario/"+ usuario
                                 try:
                                     dato = requests.get(url).json()
-                                    nombre=dato["nombre_usuario"]
-                                    nombre=", "+nombre[0:nombre.index(" ")]
+                                    name=dato["nombre_usuario"]
+                                    name=", "+name[0:name.index(" ")]
                                     
                                 except requests.exceptions.RequestException as e:
                                     st.write("")
@@ -48,8 +46,8 @@ with st.sidebar:
                             st.warning('Usuario Incorrecto', icon="⚠️")
 
                         
-            bienvenida= 'Te damos la bienvenida a FitoFit' + nombre +'!'
-            st.title(bienvenida)
+    bienvenida= 'Te damos la bienvenida a FitoFit' + name +'!'
+    st.title(bienvenida)
     if sesion=='Nuevo Usuario': 
         with st.form("Nueva Cuenta"):
             newname=st.text_input("Nombre")
@@ -104,9 +102,11 @@ with st.sidebar:
                     try:
                         dato = requests.get(url).json()
                         contra=dato["contrasena"]
-                            
+                        x=list(dato.keys())
+                        if x =='mensaje':                           
+                            raise Exception()   
                         if contra!=contrasena:
-                                usuario=0  ##error
+                                usuario=""
                                 st.warning('Contraseña Incorrecta, prueba de nuevo', icon="⚠️")
                         else:
                             url = "http://127.0.0.1:5000/eliminarusuario/" + usuario
@@ -121,6 +121,9 @@ with st.sidebar:
 
                     except requests.exceptions.RequestException as e:
                             st.write("")
+                    except Exception as e:
+                            usuario=""
+                            st.warning('Usuario Incorrecto', icon="⚠️")
                      
     st.info('Qué quieres hacer?')
     choice = st.radio('Menú', ['Tu actividad', 'Subir una actividad', 'Consultar un evento',"FitoFito","Encuentra Paisanos de tu edad"])   
