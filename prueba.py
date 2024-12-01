@@ -334,8 +334,9 @@ if choice== "Subir actividades de mi reloj":
     ## ¡Aquí puedes subir actividades realizadas con el reloj!
 
     """)
-        actividades = st.file_uploader("upload file", type={"csv"})
+        actividades = st.file_uploader("Súbelas aquí", type={"csv"})
         if actividades is not None:
+            st.balloons()
             actividades_df = pd.read_csv(actividades)
             listas=[]
             for i in range(len(actividades_df)):
