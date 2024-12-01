@@ -1,8 +1,6 @@
 import streamlit as st
 import pandas as pd
 import requests
-import csv
-import time
 import numpy as np
 import matplotlib.pyplot as plt
 import datetime
@@ -126,7 +124,7 @@ with st.sidebar:
                             st.warning('Usuario Incorrecto', icon="⚠️")
                      
     st.info('Qué quieres hacer?')
-    choice = st.radio('Menú', ['Tu actividad', 'Subir una actividad', 'Consultar un evento',"FitoFito","Encuentra Paisanos de tu edad"])   
+    choice = st.radio('Menú', ['Tu actividad', 'Subir una actividad', 'Consultar un evento',"FitoFito","Encuentra Paisanos de tu edad","Subir actividades de mi reloj"])   
 if choice == 'Tu actividad':
     if usuario =="":
          st.write("## Primero, inicia sesión")
@@ -142,6 +140,11 @@ if choice == 'Tu actividad':
                 # Extraer etiquetas y valores del diccionario
                 etiquetas = list(data["kcal_por_deporte_por_usuario"].keys())
                 valores = list(data["kcal_por_deporte_por_usuario"].values())
+                print(valores)
+                print(etiquetas)
+                df=pd.DataFrame(data=valores,index=etiquetas,columns=[''])
+                print(df)
+                df.to_csv("results.csv")
 
                 # Generar colores aleatorios en formato hexadecimal
                 colores = ['#%06X' % np.random.randint(0, 0xFFFFFF) for _ in range(len(data["kcal_por_deporte_por_usuario"]))]
@@ -323,4 +326,75 @@ if choice == 'Encuentra Paisanos de tu edad':
     except requests.exceptions.RequestException as e:
         st.write("")
 
- 
+if choice== "Subir actividades de mi reloj":
+    if usuario =="":
+         st.write("## Primero, inicia sesión")
+    if usuario !="":
+        st.write("""
+    ## ¡Aquí puedes subir actividades realizadas con el reloj!
+
+    """)
+        actividades = st.file_uploader("upload file", type={"csv"})
+        if actividades is not None:
+            actividades_df = pd.read_csv(actividades)
+            listas=[]
+            for i in range(len(actividades_df)):
+                lista = []
+                for x in actividades_df.iloc[i]:
+                    if pd.isna(x):
+                        lista.append(None)
+                    elif isinstance(x, (np.int64)):  
+                        lista.append(int(x))  # lo tengo que hacer así porque se me añadían como np.int64
+                    else:
+                        lista.append(x)                  
+                url="http://127.0.0.1:5000/ultimaactividad"
+                try:
+                    dato = requests.get(url).json()
+                    id_act=dato["actividad"]["ID_ACTIVIDAD"]
+                    id_act = int(id_act[(id_act.index('t') + 1):]) # Start just after 't'
+                    id=id_act+1
+                    id_act= f"id_act{id}"
+                    print(id_act)
+                except requests.exceptions.RequestException as e:
+                    st.write("")
+                ##añado nueva act del usuario
+                dict1= {
+                            "ID_USUARIO" : usuario,
+                            "ID_ACTIVIDAD" : id_act  
+                        }
+                url="http://127.0.0.1:5000/usuarioactividad"
+                
+
+                try:
+                        # Sending POST request with data as JSON
+                            response = requests.post(url, json=dict1)
+                        
+                        # Check if the request was successful
+                            response.raise_for_status()  # Raises an error for 4xx/5xx HTTP status codes
+                except requests.exceptions.RequestException as e:
+                        st.write("")
+                dict={}
+                dict= {
+                        "ID_ACTIVIDAD" : id_act,
+                        "NOMBRE_ACTIVIDAD": lista[0],
+                        "TEXTO": lista[1],
+                        "KM":lista[2],
+                        "FC": lista[3],
+                        "KCAL": lista[4],
+                        "DURACION": lista[5],
+                        "ID_EVENTO": lista[6],
+                        "NOMBRE_DEPORTE": lista[7]    
+                        }
+                url="http://127.0.0.1:5000/actividades"
+
+
+                try:
+                            # Sending POST request with data as JSON
+                            response = requests.post(url, json=dict)
+                            # Check if the request was successful
+                            response.raise_for_status()  # Raises an error for 4xx/5xx HTTP status codes
+                except requests.exceptions.RequestException as e:
+                            st.write("El deporte que has practicado todavía no está incluido en la app.")
+                            print(dict)
+
+     
