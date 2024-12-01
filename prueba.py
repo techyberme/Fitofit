@@ -6,10 +6,9 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 import datetime
-usuario="id_usuario_1"
+usuario=""
 nombre=""
-
-with st.sidebar:  
+with st.sidebar: 
     sesion = st.radio(" ",['Iniciar Sesión', 'Nuevo Usuario','Eliminar Cuenta'])  
     if sesion=='Iniciar Sesión':
         with st.form('Iniciar Sesión'):
@@ -28,7 +27,7 @@ with st.sidebar:
                             raise Exception()
                         contra=dato["contrasena"]
                         if contra!=contrasena:
-                                usuario=0
+                                usuario=""
                                 st.warning('Contraseña Incorrecta', icon="⚠️")
                         else:
                                 st.balloons()
@@ -45,7 +44,8 @@ with st.sidebar:
                     except requests.exceptions.RequestException as e:
                             st.write("")
                     except Exception as e:
-                            st.write("")
+                            usuario=""
+                            st.warning('Usuario Incorrecto', icon="⚠️")
 
                         
             bienvenida= 'Te damos la bienvenida a FitoFit' + nombre +'!'
@@ -136,8 +136,6 @@ if choice == 'Tu actividad':
         url="http://127.0.0.1:5000/kcals/" + usuario
         try:
                 data = requests.get(url).json()
-                print(data)
-                print(data["kcal_por_deporte_por_usuario"])
                 # Extraer etiquetas y valores del diccionario
                 etiquetas = list(data["kcal_por_deporte_por_usuario"].keys())
                 valores = list(data["kcal_por_deporte_por_usuario"].values())
@@ -246,12 +244,6 @@ if choice == 'Subir una actividad':
 
                 
                 
-            
-                
-           
-
-            
-
 
 if choice == 'Consultar un evento':
     col1, col2,col3 = st.columns(3)
@@ -278,27 +270,33 @@ if choice == 'FitoFito':
         url="http://127.0.0.1:5000/usuario_deportes/" + id
         try:
             data = requests.get(url).json()
-             
-            # Extraer etiquetas y valores del diccionario
-            etiquetas = list(data["deportes_por_usuario"].keys())
-            valores = list(data["deportes_por_usuario"].values())
-
-            # Generar colores aleatorios en formato hexadecimal
-            colores = ['#%06X' % np.random.randint(0, 0xFFFFFF) for _ in range(len(data["deportes_por_usuario"]))]
-            url="http://127.0.0.1:5000/usuarios/nombre_usuario/"+ id
             try:
+                print(data["deportes_por_usuario"][0])   ##lo hago para que salte la excepción antes de que se printee el titulo
+                st.write("#### ¡Hemos encontrado los siguientes eventos en tu zona!")
+                etiquetas = list(data["deportes_por_usuario"].keys())
+                valores = list(data["deportes_por_usuario"].values())
+
+                # Generar colores aleatorios en formato hexadecimal
+                colores = ['#%06X' % np.random.randint(0, 0xFFFFFF) for _ in range(len(data["deportes_por_usuario"]))]
+                url="http://127.0.0.1:5000/usuarios/nombre_usuario/"+ id
+                try:
                         dato = requests.get(url).json()
                         name=dato["nombre_usuario"]
                                 
-            except requests.exceptions.RequestException as e:
+                except requests.exceptions.RequestException as e:
                         st.write("")
-            # Crear gráfico de pastel
-            fig, ax = plt.subplots(figsize=(6, 6))
-            ax.pie(valores, labels=etiquetas, autopct='%1.1f%%', startangle=90, colors=colores)
-            ax.set_title(f'Deportes realizados por {name}')
+                # Crear gráfico de pastel
+                fig, ax = plt.subplots(figsize=(6, 6))
+                ax.pie(valores, labels=etiquetas, autopct='%1.1f%%', startangle=90, colors=colores)
+                ax.set_title(f'Deportes realizados por {name}')
 
-            # Mostrar el gráfico en Streamlit
-            st.pyplot(fig)
+                # Mostrar el gráfico en Streamlit
+                st.pyplot(fig)
+             
+            except Exception:
+                st.write(f"#### El usuario {id} no existe")
+            # Extraer etiquetas y valores del diccionario
+            
 
 
         except requests.exceptions.RequestException as e:
