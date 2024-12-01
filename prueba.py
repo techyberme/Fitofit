@@ -25,7 +25,7 @@ with st.sidebar:
                         print(x[0])
                         print("hola")
                         if x =='mensaje':                           
-                            raise Exception("Sorry, no numbers below zero")
+                            raise Exception()
                         contra=dato["contrasena"]
                         if contra!=contrasena:
                                 usuario=0
@@ -125,8 +125,35 @@ with st.sidebar:
     st.info('Qué quieres hacer?')
     choice = st.radio('Menú', ['Tu actividad', 'Subir una actividad', 'Consultar un evento',"FitoFito","Encuentra Paisanos de tu edad"])   
 if choice == 'Tu actividad':
-    st.write("Input Carrera")
-    st.title('Gráfica de precios')
+    if usuario =="":
+         st.write("## Primero, inicia sesión")
+    if usuario !="":
+        st.write("""
+    ## ¡Aquí tienes tus estadísticas!
+
+    """)
+        
+        url="http://127.0.0.1:5000/kcals/" + usuario
+        try:
+                data = requests.get(url).json()
+                print(data)
+                print(data["kcal_por_deporte_por_usuario"])
+                # Extraer etiquetas y valores del diccionario
+                etiquetas = list(data["kcal_por_deporte_por_usuario"].keys())
+                valores = list(data["kcal_por_deporte_por_usuario"].values())
+
+                # Generar colores aleatorios en formato hexadecimal
+                colores = ['#%06X' % np.random.randint(0, 0xFFFFFF) for _ in range(len(data["kcal_por_deporte_por_usuario"]))]
+                fig, ax = plt.subplots(figsize=(6, 6))
+                ax.bar(etiquetas, valores,color=colores)
+                ax.set_title(f'Kcal promedio')
+                ax.set_xlabel('Deportes')
+                ax.set_ylabel('Kcal promedio')
+                
+                # Mostrar el gráfico en Streamlit
+                st.pyplot(fig)
+        except requests.exceptions.RequestException as e:
+            st.write("")
      
 if choice == 'Subir una actividad':
     if usuario =="":
@@ -150,6 +177,8 @@ if choice == 'Subir una actividad':
         if on:
                 with col2:
                     event=st.text_input("Nombre del Evento")
+        else: 
+            event = None
         with col1:
             option = st.selectbox(
                     "Deporte",
@@ -200,7 +229,7 @@ if choice == 'Subir una actividad':
                         "FC": fc,
                         "KCAL": kcal,
                         "DURACION": dur,
-                        "ID_EVENTO": "EV_001",
+                        "ID_EVENTO": event,
                         "NOMBRE_DEPORTE": deporte    
                         }
                     url="http://127.0.0.1:5000/actividades"
@@ -274,40 +303,6 @@ if choice == 'FitoFito':
 
         except requests.exceptions.RequestException as e:
             st.write("")
-
-if choice == 'Estadisticas usuario':
-        id= st.text_input("### Promedio de kcal del usuario por deporte")
-        url="http://127.0.0.1:5000/usuario_deportes/" + id
-        try:
-            data = requests.get(url).json()
-             
-            # Extraer etiquetas y valores del diccionario
-            etiquetas = list(data["kcal_por_deporte_por_usuario"].keys())
-            valores = list(data["kcal_por_deporte_por_usuario"].values())
-
-            # Generar colores aleatorios en formato hexadecimal
-            colores = ['#%06X' % np.random.randint(0, 0xFFFFFF) for _ in range(len(data["kcal_por_deporte_por_usuario"]))]
-            url="http://127.0.0.1:5000/usuarios/nombre_usuario/"+ id
-            try:
-                        dato = requests.get(url).json()
-                        name=dato["nombre_usuario"]
-                                
-            except requests.exceptions.RequestException as e:
-                        st.write("")
-            # Crear gráfico de pastel
-            fig, ax = plt.subplots(figsize=(6, 6))
-            ax.bar(etiquetas, valores,colors=colores)
-            ax.set_title(f'Kcal promedio por deporte de {name}')
-            ax.set_xlabel('Deportes')
-            ax.set_ylabel('Kcal promedio')
-            
-            # Mostrar el gráfico en Streamlit
-            st.pyplot(fig)
-
-
-        except requests.exceptions.RequestException as e:
-            st.write("")
-
 
 if choice == 'Encuentra Paisanos de tu edad':
     col1, col2,col3 = st.columns(3)
