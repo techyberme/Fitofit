@@ -274,7 +274,7 @@ if choice == 'FitoFito':
         try:
             data = requests.get(url).json()
             try:
-                print(data["deportes_por_usuario"][0])   ##lo hago para que salte la excepción antes de que se printee el titulo
+                print(data["deportes_por_usuario"])   ##lo hago para que salte la excepción antes de que se printee el titulo
                 st.write("#### ¡Hemos encontrado los siguientes eventos en tu zona!")
                 etiquetas = list(data["deportes_por_usuario"].keys())
                 valores = list(data["deportes_por_usuario"].values())
@@ -296,7 +296,7 @@ if choice == 'FitoFito':
                 # Mostrar el gráfico en Streamlit
                 st.pyplot(fig)
              
-            except Exception:
+            except Exception as e:
                 st.write(f"#### El usuario {id} no existe")
             # Extraer etiquetas y valores del diccionario
             
