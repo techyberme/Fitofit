@@ -161,32 +161,7 @@ def kcals(codigo):
     except Exception as ex:
         return jsonify({'mensaje': ex})
 
-@app.route('/duracion/<codigo>', methods= ['GET'])
-def duracion(codigo):
-    try:
-        cursor = conexion.connection.cursor()
-        sql= """
-        SELECT A.NOMBRE_DEPORTE , UA.ID_USUARIO, AVG(KCAL)
-        FROM ACTIVIDADES A, USUARIOACTIVIDAD UA
-        WHERE A.ID_ACTIVIDAD=UA.ID_ACTIVIDAD AND UA.ID_USUARIO= '{0}'
-        GROUP BY A.NOMBRE_DEPORTE""".format(codigo)
-        
-        # Ejecutar la consulta con el valor de id_usuario
-        cursor.execute(sql)
-        datos = cursor.fetchall()
 
-        # Diccionario para guardar las kcal de actividades
-        duracion={}
-
-        # Construir el diccionario con los datos obtenidos
-        for fila in datos:
-            duracion[fila[0]]=int(fila[1])
-             
-
-        # Retornar el diccionario en formato JSON
-        return jsonify({'duracion_por_deporte': duracion, 'mensaje': 'Actividades listadas correctamente'})
-    except Exception as ex:
-        return jsonify({'mensaje': ex})
 ##REGISTROS
 
 #eventos 
