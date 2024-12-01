@@ -221,7 +221,7 @@ if choice == 'Subir una actividad':
                     # Check if the request was successful
                         response.raise_for_status()  # Raises an error for 4xx/5xx HTTP status codes
                     except requests.exceptions.RequestException as e:
-                        st.error(f"An error occurred: {e}")
+                        st.write("")
                     dict= {
                         "ID_ACTIVIDAD" : id_act,
                         "NOMBRE_ACTIVIDAD": nombre,
@@ -239,11 +239,10 @@ if choice == 'Subir una actividad':
                     try:
                         # Sending POST request with data as JSON
                         response = requests.post(url, json=dict)
-                        
                         # Check if the request was successful
                         response.raise_for_status()  # Raises an error for 4xx/5xx HTTP status codes
                     except requests.exceptions.RequestException as e:
-                        st.error(f"An error occurred: {e}")
+                        st.write("El deporte que has practicado todavía no está incluido en la app.")
 
                 
                 
