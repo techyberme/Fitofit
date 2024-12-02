@@ -186,8 +186,7 @@ def eventos_mes(codigo):
         # Retornar el diccionario en formato JSON
         return jsonify({'eventos_mes_usuario': eventos_mes, 'mensaje': 'Actividades listadas correctamente'})
     except Exception as ex:
-        return jsonify({'mensaje': ex})
-
+        return jsonify({'mensaje': ex})                        
 ##REGISTROS
 
 #eventos 
