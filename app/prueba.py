@@ -4,35 +4,48 @@ import requests
 import numpy as np
 import matplotlib.pyplot as plt
 import datetime
+# Variables globales para almacenar información del usuario
 usuario=""
 name=""
+#Ejemplo de programación orientada a objetos
+class Evento:
+ def __init__(self, id, fecha, hora, precio):
+    self.id = id # Attribute
+    self.fecha = fecha
+    self.hora=hora
+    self.precio=precio 
+# Devuelve una descripción del evento como texto
+ def info(self):
+    return f"El evento {self.id} será el {self.fecha} a las {self.hora} y tiene un costo de {self.precio} €"
+# Crear un menú en la barra lateral de Streamlit
 with st.sidebar: 
     sesion = st.radio(" ",['Iniciar Sesión', 'Nuevo Usuario','Eliminar Cuenta'])  
     if sesion=='Iniciar Sesión':
         with st.form('Iniciar Sesión'):
             usuario=st.text_input("Usuario")
-            contrasena=st.text_input("Contraseña",type="password")
-            submitted = st.form_submit_button("Submit")
+            contrasena=st.text_input("Contraseña",type="password") #La contraseña se escribe con asteriscos
+            submitted = st.form_submit_button("Submit")  # Botón para enviar el formulario
             if submitted:                   
-                    url="http://127.0.0.1:5000/usuarios/contrasena/"+usuario
+                    url="http://127.0.0.1:5000/usuarios/contrasena/"+usuario   #Comprobación de que la contraseña es correcta
                     try:
-                        dato = requests.get(url).json()
+                        dato = requests.get(url).json()                         #obtención de datos del servidador
                         
                         x=list(dato.keys())
+                        #si ha enviado un mensaje: usuario no encontrado, levanta flag de excepción
                         if x =='mensaje':                           
-                            raise Exception()
+                            raise Exception()  
                         contra=dato["contrasena"]
                         if contra!=contrasena:
                                 usuario=""
-                                st.warning('Contraseña Incorrecta', icon="⚠️")
+                                st.warning('Contraseña Incorrecta', icon="⚠️")    #muestra advertencia
                         else:
-                                st.balloons()
+                                st.balloons()                                       #globos para indicar que se ha registrado bien
                                 ##sacar nombre_usuario
                                 url="http://127.0.0.1:5000/usuarios/nombre_usuario/"+ usuario
                                 try:
                                     dato = requests.get(url).json()
                                     name=dato["nombre_usuario"]
-                                    name=", "+name[0:name.index(" ")]
+                                    name=", "+name[0:name.index(" ")]               #se extrae el primer nombre dle usuario
                                     
                                 except requests.exceptions.RequestException as e:
                                     st.write("")
@@ -41,12 +54,12 @@ with st.sidebar:
                             st.write("")
                     except Exception as e:
                             usuario=""
-                            st.warning('Usuario Incorrecto', icon="⚠️")
+                            st.warning('Usuario Incorrecto', icon="⚠️")            #advertencia si el usuario es incorrecto
 
                         
     bienvenida= 'Te damos la bienvenida a FitoFit' + name +'!'
     st.title(bienvenida)
-    if sesion=='Nuevo Usuario': 
+    if sesion=='Nuevo Usuario': #formulario para crear nueva cuenta
         with st.form("Nueva Cuenta"):
             newname=st.text_input("Nombre")
             newcorreo=st.text_input("Correo")
@@ -54,7 +67,7 @@ with st.sidebar:
             min_date = datetime.date(1960, 1, 1)
             default_date = datetime.date(2002, 4, 5)
             newfecha = st.date_input("Tu año de nacimiento", default_date,min_date)
-            newfecha=str(newfecha)
+            newfecha=str(newfecha)                          #convierte la fecha a string para la comunicación con sql
             newsexo=st.selectbox(
             "Sexo",
             ("M", "F", "-"),
@@ -71,6 +84,7 @@ with st.sidebar:
                 except requests.exceptions.RequestException as e:
                     st.write("")
                 st.balloons()
+                # Crea un diccionario con la información del nuevo usuario
                 dict1= {
                         "ID_USUARIO" : id_usuario,
                         "NOMBRE_USUARIO" : newname,
@@ -127,6 +141,7 @@ with st.sidebar:
     st.info('Qué quieres hacer?')
     choice = st.radio('Menú', ['Tu actividad', 'Subir una actividad', 'Consultar un evento',"FitoFito","Encuentra Paisanos de tu edad","Subir actividades de mi reloj"])   
 if choice == 'Tu actividad':
+    ##si no se ha iniciado sesión, no se mostrará nada
     if usuario =="":
          st.write("## Primero, inicia sesión")
     if usuario !="":
@@ -157,9 +172,12 @@ if choice == 'Tu actividad':
                     st.pyplot(fig)
             except requests.exceptions.RequestException as e:
                 st.write("")
+            #se crea el df
             df=pd.DataFrame(data=valores,index=etiquetas,columns=[''])
             print(df)
+            #conversión a csv
             csv =df.to_csv().encode("utf-8")
+            #opción para descargar
             st.download_button(
             label="Descárgate estos resultados",
             data=csv,
@@ -212,13 +230,16 @@ if choice == 'Subir una actividad':
         except requests.exceptions.RequestException as e:
             st.write("")
         col1, col2 = st.columns(2)
+        #botón para preguntar si ha sido parte de algún evento
         on = col2.toggle("¿Ha sido parte de algún evento?")
         if on:
                 with col2:
+                    #si hay, se introduce el id. Si no el evento es nulo
                     event=st.text_input("Nombre del Evento")
         else: 
             event = None
         with col1:
+            #aquí, según el deporte el formulario cambia. Si es deporte de distancia se muestran kms.
             option = st.selectbox(
                     "Deporte",
                     ('CARRERA', 'CICLISMO', 'Otro'),
@@ -297,7 +318,8 @@ if choice == 'Consultar un evento':
             st.write("#### ¡Hemos encontrado los siguientes eventos en tu zona!")
             
             for i in range(len(data["ciudades"])):
-                st.write("El evento",data["ciudades"][i]["ID_EVENTO"], "será el ",data["ciudades"][i]["FECHA"],"a las",data["ciudades"][i]["HORA"],"y tiene un costo de",data["ciudades"][i]["PRECIO"],"€")
+                event = Evento(data["ciudades"][i]["ID_EVENTO"], data["ciudades"][i]["FECHA"],data["ciudades"][i]["HORA"],data["ciudades"][i]["PRECIO"])
+                st.write(event.info())
         except Exception:
             st.write(f"#### No hemos encontrado eventos en {city}")
     except requests.exceptions.RequestException as e:
@@ -307,6 +329,7 @@ if choice == 'Consultar un evento':
 ##aquí tengo que hacer una consulta y devolveré un gráfico con las actividades del usuario,desglosado por deportes
 if choice == 'FitoFito':
         id= st.text_input("### A quién quieres cotillear")
+        #creación de la url
         url="http://127.0.0.1:5000/usuario_deportes/" + id
         try:
             data = requests.get(url).json()
@@ -372,11 +395,14 @@ if choice== "Subir actividades de mi reloj":
         actividades = st.file_uploader("Súbelas aquí", type={"csv"})
         if actividades is not None:
             st.balloons()
+            #leer el archivo csv y pasarlo a dv
             actividades_df = pd.read_csv(actividades)
             listas=[]
+            #ahora se crean las listas para ir incluyendo los diferentes eventos en el csv
             for i in range(len(actividades_df)):
                 lista = []
                 for x in actividades_df.iloc[i]:
+                    #modificación de valores si en función del tipo de los valores
                     if pd.isna(x):
                         lista.append(None)
                     elif isinstance(x, (np.int64)):  
